@@ -5,7 +5,8 @@ import AlertCard from '../components/AlertCard.astro';
 import BECCard from '../components/BECCard.astro';
 import portfolio from '../data/portfolio.json';
 
-const base = import.meta.env.BASE_URL;
+// Strip any trailing slash so we can always write `${base}/path` safely.
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const pageTitle = `${portfolio.profile.name} — SOCSIM Portfolio`;
 ---
 <BaseLayout title={pageTitle}>
@@ -21,7 +22,7 @@ const pageTitle = `${portfolio.profile.name} — SOCSIM Portfolio`;
     portfolio.alerts.map((a) => (
       <AlertCard
         alert={a}
-        detailUrl={`${base}alerts/${a.id}`}
+        detailUrl={`${base}/alerts/${a.id}`}
       />
     ))
   )}
@@ -35,7 +36,7 @@ const pageTitle = `${portfolio.profile.name} — SOCSIM Portfolio`;
     portfolio.bec.map((b) => (
       <BECCard
         bec={b}
-        detailUrl={`${base}bec/${b.id}`}
+        detailUrl={`${base}/bec/${b.id}`}
       />
     ))
   )}

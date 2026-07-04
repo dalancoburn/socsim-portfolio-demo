@@ -12,7 +12,7 @@ export const getStaticPaths = (() => {
 }) satisfies GetStaticPaths;
 
 const { alert } = Astro.props;
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '') || '/';
 const pageTitle = `${alert.id} — ${alert.alertName} — ${portfolio.profile.name}`;
 ---
 <BaseLayout title={pageTitle}>
