@@ -1,22 +1,22 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import CaseStudyCard from '../../components/CaseStudyCard.astro';
+import BECCard from '../../components/BECCard.astro';
 import portfolio from '../../data/portfolio.json';
 
 export const getStaticPaths = (() => {
-  return portfolio.cases.map((c) => ({
-    params: { id: c.id },
-    props: { caseData: c },
+  return portfolio.bec.map((b) => ({
+    params: { id: b.id },
+    props: { bec: b },
   }));
 }) satisfies GetStaticPaths;
 
-const { caseData } = Astro.props;
-const pageTitle = `${caseData.id} — ${portfolio.profile.name} — SOCSIM`;
+const { bec } = Astro.props;
 const base = import.meta.env.BASE_URL;
+const pageTitle = `${bec.id} — ${bec.caseName} — ${portfolio.profile.name}`;
 ---
 <BaseLayout title={pageTitle}>
-  <div style="margin-bottom: 32px;">
+  <div style="margin-bottom:32px;">
     <a
       href={base}
       style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--text-dimmer);text-decoration:none;letter-spacing:0.08em;"
@@ -25,5 +25,5 @@ const base = import.meta.env.BASE_URL;
     </a>
   </div>
 
-  <CaseStudyCard caseData={caseData} />
+  <BECCard bec={bec} />
 </BaseLayout>

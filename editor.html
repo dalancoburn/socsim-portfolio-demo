@@ -9,750 +9,892 @@
   <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #0d0d0d;
-      --surface: #141414;
-      --surface-2: #1a1a1a;
-      --surface-3: #1f1f1f;
-      --border: rgba(255,255,255,0.1);
-      --border-focus: rgba(240,122,34,0.5);
-      --accent: #f07a22;
-      --text: #e8e8e8;
-      --text-dim: #888;
-      --text-dimmer: #555;
-      --danger: #ef4444;
-      --green: #22c55e;
+      --bg:#0d0d0d;--surface:#141414;--surface-2:#1a1a1a;--surface-3:#1f1f1f;
+      --border:rgba(255,255,255,0.1);--focus:rgba(240,122,34,0.5);
+      --accent:#f07a22;--text:#e8e8e8;--dim:#888;--dimmer:#555;
+      --danger:#ef4444;--green:#22c55e;--yellow:#eab308;
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background-color: var(--bg);
-      background-image:
-        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-      background-size: 48px 48px;
-      color: var(--text);
-      font-family: 'Inter', system-ui, sans-serif;
-      min-height: 100vh;
-      font-size: 14px;
-      line-height: 1.5;
-    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:14px;line-height:1.5;min-height:100vh}
 
-    /* ── EDITOR HEADER ─── */
-    .editor-header {
-      background: rgba(13,13,13,0.95);
-      border-bottom: 1px solid var(--border);
-      padding: 16px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .editor-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .editor-logo {
-      font-family: 'Big Shoulders Display', sans-serif;
-      font-weight: 900;
-      font-size: 1.15rem;
-      color: var(--accent);
-      letter-spacing: 0.06em;
-    }
-    .editor-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      color: var(--text-dimmer);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-    .header-actions { display: flex; gap: 10px; align-items: center; }
+    /* ── HEADER ── */
+    .ed-header{background:rgba(13,13,13,.95);border-bottom:1px solid var(--border);padding:14px 40px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:100}
+    .ed-logo{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:1.1rem;color:var(--accent);letter-spacing:.06em}
+    .ed-title{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--dimmer);letter-spacing:.1em;text-transform:uppercase;margin-left:10px}
+    .header-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 
-    /* ── BUTTONS ─── */
-    .btn {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.06em;
-      padding: 8px 16px;
-      border-radius: 4px;
-      border: 1px solid var(--border);
-      background: var(--surface-2);
-      color: var(--text-dim);
-      cursor: pointer;
-      transition: border-color 0.15s, color 0.15s, background 0.15s;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .btn:hover { border-color: var(--text-dim); color: var(--text); }
-    .btn-primary {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #000;
-      font-weight: 600;
-    }
-    .btn-primary:hover { background: #d96d1a; border-color: #d96d1a; color: #000; }
-    .btn-danger {
-      border-color: rgba(239,68,68,0.3);
-      color: var(--danger);
-      background: rgba(239,68,68,0.05);
-      padding: 4px 10px;
-      font-size: 0.6rem;
-    }
-    .btn-danger:hover { border-color: var(--danger); background: rgba(239,68,68,0.1); }
-    .btn-add {
-      border-style: dashed;
-      color: var(--accent);
-      border-color: rgba(240,122,34,0.3);
-      background: rgba(240,122,34,0.04);
-      font-size: 0.65rem;
-    }
-    .btn-add:hover { border-color: var(--accent); background: rgba(240,122,34,0.08); }
+    /* ── BUTTONS ── */
+    .btn{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.05em;padding:7px 14px;border-radius:4px;border:1px solid var(--border);background:var(--surface-2);color:var(--dim);cursor:pointer;transition:border-color .15s,color .15s;display:inline-flex;align-items:center;gap:6px}
+    .btn:hover{border-color:var(--dim);color:var(--text)}
+    .btn-primary{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600}
+    .btn-primary:hover{background:#d96d1a;border-color:#d96d1a;color:#000}
+    .btn-ghost{background:transparent;border-color:transparent;color:var(--dim)}
+    .btn-ghost:hover{border-color:var(--border);color:var(--text)}
+    .btn-danger{border-color:rgba(239,68,68,.3);color:var(--danger);background:rgba(239,68,68,.05);padding:4px 10px;font-size:.58rem}
+    .btn-danger:hover{border-color:var(--danger);background:rgba(239,68,68,.1)}
+    .btn-add{border-style:dashed;color:var(--accent);border-color:rgba(240,122,34,.3);background:rgba(240,122,34,.04);font-size:.63rem}
+    .btn-add:hover{border-color:var(--accent);background:rgba(240,122,34,.08)}
+    .btn-sm{padding:4px 10px;font-size:.6rem}
+    .btn-green{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.3);color:var(--green)}
+    .btn-green:hover{background:rgba(34,197,94,.2);border-color:var(--green)}
 
-    /* ── LAYOUT ─── */
-    .editor-body { max-width: 860px; margin: 0 auto; padding: 40px 24px 80px; }
+    /* ── NOTIFICATION ── */
+    #notif{display:none;position:fixed;top:70px;left:50%;transform:translateX(-50%);z-index:200;padding:12px 20px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.04em;max-width:90vw;text-align:center;transition:opacity .3s}
+    #notif.success{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.4);color:var(--green)}
+    #notif.error{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.35);color:var(--danger)}
 
-    /* ── FORM SECTIONS ─── */
-    .form-section {
-      margin-bottom: 40px;
-    }
-    .form-section-title {
-      font-family: 'Big Shoulders Display', sans-serif;
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: #fff;
-      margin-bottom: 4px;
-    }
-    .form-section-sub {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem;
-      color: var(--text-dimmer);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-    }
-    .form-panel {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 28px;
-    }
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-    .form-row.full { grid-template-columns: 1fr; }
-    .form-row.three { grid-template-columns: 1fr 1fr 1fr; }
-    .form-field {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .form-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6rem;
-      color: var(--text-dimmer);
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-    .form-input, .form-textarea, .form-select {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      font-size: 0.875rem;
-      padding: 9px 12px;
-      transition: border-color 0.15s;
-      outline: none;
-      width: 100%;
-    }
-    .form-input:focus, .form-textarea:focus, .form-select:focus {
-      border-color: var(--border-focus);
-    }
-    .form-input::placeholder, .form-textarea::placeholder { color: var(--text-dimmer); }
-    .form-textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
-    .form-select { cursor: pointer; }
-    .form-hint {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem;
-      color: var(--text-dimmer);
-      letter-spacing: 0.04em;
-    }
-    .form-divider {
-      height: 1px;
-      background: var(--border);
-      margin: 24px 0;
-    }
-    .form-sub-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6rem;
-      color: var(--text-dim);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
+    /* ── GITHUB SETTINGS PANEL ── */
+    .gh-panel{background:var(--surface);border:1px solid var(--border);border-radius:6px;margin-bottom:28px;overflow:hidden}
+    .gh-panel-header{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+    .gh-panel-title{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--dim);letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+    .gh-connected{display:inline-flex;align-items:center;gap:5px;color:var(--green);font-size:.6rem}
+    .gh-connected::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green)}
+    .gh-panel-body{padding:20px;border-top:1px solid var(--border)}
+    .gh-panel-body.hidden{display:none}
+    .gh-fields{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px}
+    .gh-instructions{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--dimmer);line-height:1.7;padding:12px;background:var(--surface-2);border-radius:4px;border:1px solid var(--border)}
+    .gh-instructions a{color:var(--accent);text-decoration:none}
+    .gh-instructions a:hover{text-decoration:underline}
 
-    /* ── CASE BLOCKS ─── */
-    .cases-container { display: flex; flex-direction: column; gap: 24px; }
-    .case-block {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      overflow: hidden;
-    }
-    .case-block-header {
-      background: var(--surface-2);
-      border-bottom: 1px solid var(--border);
-      padding: 14px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .case-block-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      color: var(--accent);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-    .case-block-body { padding: 24px; }
-    .case-block-subsection { margin-bottom: 24px; }
-    .case-block-subsection:last-child { margin-bottom: 0; }
+    /* ── BODY LAYOUT ── */
+    .ed-body{max-width:880px;margin:0 auto;padding:32px 24px 100px}
 
-    /* ── REPEATER ROWS ─── */
-    .repeater-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
-    .repeater-row {
-      display: grid;
-      align-items: start;
-      gap: 8px;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 10px 12px;
-    }
-    .repeater-row.timeline-row { grid-template-columns: 130px 1fr auto; }
-    .repeater-row.ioc-row { grid-template-columns: 100px 1fr 1fr auto; }
-    .repeater-row.detection-row { grid-template-columns: 1fr auto; }
-    .repeater-cell { display: flex; flex-direction: column; gap: 4px; }
-    .repeater-cell-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.55rem;
-      color: var(--text-dimmer);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-    .row-remove-btn {
-      align-self: flex-end;
-      padding-bottom: 2px;
-    }
+    /* ── SECTIONS ── */
+    .ed-section{margin-bottom:36px}
+    .ed-section-title{font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:1.4rem;color:#fff;margin-bottom:2px}
+    .ed-section-sub{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--dimmer);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+    .ed-panel{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:24px}
 
-    /* ── VERIFIED TOGGLE ─── */
-    .verified-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      background: var(--surface-2);
-      cursor: pointer;
-    }
-    .verified-row input[type="checkbox"] { accent-color: var(--green); width: 15px; height: 15px; cursor: pointer; }
-    .verified-label {
-      font-size: 0.875rem;
-      color: var(--text-dim);
-      cursor: pointer;
-    }
-    .verified-label strong { color: var(--green); }
+    /* ── FORM ── */
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+    .form-row.full{grid-template-columns:1fr}
+    .form-row.three{grid-template-columns:1fr 1fr 1fr}
+    .form-row.four{grid-template-columns:1fr 1fr 1fr 1fr}
+    .form-field{display:flex;flex-direction:column;gap:5px}
+    .form-label{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--dimmer);letter-spacing:.14em;text-transform:uppercase}
+    .form-hint{font-size:.55rem;color:var(--dimmer);font-style:normal;letter-spacing:.02em;text-transform:none}
+    .form-input,.form-textarea,.form-select{background:var(--surface-2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Inter',sans-serif;font-size:.875rem;padding:8px 11px;outline:none;width:100%;transition:border-color .15s}
+    .form-input:focus,.form-textarea:focus,.form-select:focus{border-color:var(--focus)}
+    .form-input::placeholder,.form-textarea::placeholder{color:var(--dimmer)}
+    .form-textarea{resize:vertical;min-height:75px;line-height:1.6}
+    .form-select{cursor:pointer}
+    .form-divider{height:1px;background:var(--border);margin:20px 0}
+    .sub-label{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--dim);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
 
-    /* ── LOAD/GENERATE BAR ─── */
-    .action-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 20px 40px;
-      border-top: 1px solid var(--border);
-      background: rgba(13,13,13,0.95);
-      position: sticky;
-      bottom: 0;
-    }
-    .action-bar-hint {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem;
-      color: var(--text-dimmer);
-      letter-spacing: 0.06em;
-    }
-    #file-input { display: none; }
+    /* ── INVESTIGATION BLOCKS ── */
+    .inv-container{display:flex;flex-direction:column;gap:20px}
+    .inv-block{background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+    .inv-block-header{background:var(--surface-2);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .inv-type-badge{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:3px}
+    .badge-alert{color:var(--accent);background:rgba(240,122,34,.1);border:1px solid rgba(240,122,34,.3)}
+    .badge-bec{color:var(--yellow);background:rgba(234,179,8,.08);border:1px solid rgba(234,179,8,.25)}
+    .inv-num{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--dimmer)}
+    .inv-body{padding:20px}
+    .inv-sub{margin-bottom:20px}
+    .inv-sub:last-child{margin-bottom:0}
 
-    @media (max-width: 640px) {
-      .editor-header { padding: 14px 16px; }
-      .editor-body { padding: 24px 16px 80px; }
-      .form-row { grid-template-columns: 1fr; }
-      .form-row.three { grid-template-columns: 1fr; }
-      .repeater-row.ioc-row { grid-template-columns: 1fr; }
-      .repeater-row.timeline-row { grid-template-columns: 1fr; }
-      .action-bar { padding: 14px 16px; flex-wrap: wrap; }
+    /* ── REPEATER ROWS ── */
+    .rep-rows{display:flex;flex-direction:column;gap:8px;margin-bottom:8px}
+    .rep-row{background:var(--surface-2);border:1px solid var(--border);border-radius:4px;padding:10px 12px;display:grid;gap:8px;align-items:start}
+    .rep-row.tl-row{grid-template-columns:130px 1fr 1fr auto}
+    .rep-row.bec-tl-row{grid-template-columns:130px 1fr 1fr auto}
+    .rep-row.step-row{grid-template-columns:1fr auto}
+    .rep-cell{display:flex;flex-direction:column;gap:3px}
+    .rep-cell-label{font-family:'JetBrains Mono',monospace;font-size:.54rem;color:var(--dimmer);letter-spacing:.1em;text-transform:uppercase}
+    .rep-remove{align-self:flex-end;padding-bottom:1px}
+
+    /* ── VERIFIED TOGGLE ── */
+    .verified-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:4px;background:var(--surface-2);cursor:pointer}
+    .verified-row input{accent-color:var(--green);width:14px;height:14px;cursor:pointer}
+    .verified-row label{font-size:.875rem;color:var(--dim);cursor:pointer}
+    .verified-row label strong{color:var(--green)}
+
+    /* ── ACTION BAR ── */
+    .action-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(13,13,13,.97);border-top:1px solid var(--border);padding:14px 40px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:100}
+    .action-bar-hint{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--dimmer);letter-spacing:.04em}
+    .action-bar-right{display:flex;gap:8px}
+    #file-input{display:none}
+
+    @media(max-width:640px){
+      .ed-header{padding:12px 16px}.ed-body{padding:20px 14px 90px}
+      .form-row,.form-row.three,.form-row.four{grid-template-columns:1fr}
+      .gh-fields{grid-template-columns:1fr}
+      .rep-row.tl-row,.rep-row.bec-tl-row{grid-template-columns:1fr}
+      .action-bar{padding:12px 16px;flex-wrap:wrap}
     }
   </style>
 </head>
 <body>
 
-<!-- ── HEADER ─────────────────────────────────────────── -->
-<header class="editor-header">
-  <div class="editor-brand">
-    <span class="editor-logo">SOCSIM</span>
-    <span class="editor-title">Portfolio Editor</span>
+<!-- ── NOTIFICATION ────────────────────────────────── -->
+<div id="notif"></div>
+
+<!-- ── HEADER ─────────────────────────────────────── -->
+<header class="ed-header">
+  <div style="display:flex;align-items:center;">
+    <span class="ed-logo">SOCSIM</span>
+    <span class="ed-title">Portfolio Editor</span>
   </div>
-  <div class="header-actions">
-    <button class="btn" onclick="document.getElementById('file-input').click()">
-      ↑ Load existing portfolio.json
-    </button>
+  <div class="header-right">
+    <button class="btn btn-ghost btn-sm" onclick="document.getElementById('file-input').click()">↑ Load JSON</button>
     <input type="file" id="file-input" accept=".json" onchange="loadJSON(this)" />
-    <button class="btn btn-primary" onclick="generateJSON()">
-      ⬇ Download portfolio.json
-    </button>
+    <button class="btn btn-sm" onclick="downloadJSON()">⬇ Download JSON</button>
+    <button class="btn btn-primary btn-sm" onclick="publishToGitHub()">⬆ Publish to GitHub</button>
   </div>
 </header>
 
-<!-- ── BODY ───────────────────────────────────────────── -->
-<div class="editor-body">
+<!-- ── BODY ───────────────────────────────────────── -->
+<div class="ed-body">
 
-  <!-- PROFILE -->
-  <div class="form-section">
-    <div class="form-section-title">Profile</div>
-    <div class="form-section-sub">Your identity — shown in the portfolio header</div>
-    <div class="form-panel">
-
-      <div class="form-row">
+  <!-- GITHUB SETTINGS -->
+  <div class="gh-panel" id="gh-panel">
+    <div class="gh-panel-header" onclick="toggleGHPanel()">
+      <span class="gh-panel-title">
+        ⚙ GitHub Settings
+        <span id="gh-status" class="gh-connected" style="display:none;">Connected</span>
+      </span>
+      <span id="gh-caret" style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--dimmer);">▼</span>
+    </div>
+    <div class="gh-panel-body" id="gh-body">
+      <div class="gh-fields">
         <div class="form-field">
-          <label class="form-label" for="p-name">Full Name</label>
-          <input id="p-name" type="text" class="form-input" placeholder="e.g. Marcus Chen" />
+          <label class="form-label">GitHub Username / Org</label>
+          <input type="text" class="form-input" id="gh-owner" placeholder="dalancoburn" />
         </div>
         <div class="form-field">
-          <label class="form-label" for="p-role">Role / Title</label>
-          <input id="p-role" type="text" class="form-input" placeholder="e.g. Security Analyst II · Blue Team" />
+          <label class="form-label">Repository Name</label>
+          <input type="text" class="form-input" id="gh-repo" placeholder="socsim-portfolio" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">Personal Access Token</label>
+          <input type="password" class="form-input" id="gh-token" placeholder="ghp_…" />
         </div>
       </div>
-
-      <div class="form-row full">
-        <div class="form-field">
-          <label class="form-label" for="p-tagline">Tagline</label>
-          <input id="p-tagline" type="text" class="form-input" placeholder="One-sentence description of your focus areas" />
-        </div>
+      <div class="gh-instructions">
+        <strong style="color:var(--dim);">One-time setup:</strong> Create a token at
+        <a href="https://github.com/settings/tokens/new?scopes=repo&description=SOCSIM+Portfolio+Editor" target="_blank">github.com → Settings → Developer settings → Personal access tokens (classic)</a>.
+        Select scope: <strong style="color:var(--text);">repo</strong>. Paste it above and click Save — your token stays in your browser only, never leaves your machine.
+        <br/><br/>
+        After saving, use <strong style="color:var(--text);">⬆ Publish to GitHub</strong> to push directly — your site rebuilds in ~60 seconds.
       </div>
-
-      <div class="form-row">
-        <div class="form-field">
-          <label class="form-label" for="p-location">Location</label>
-          <input id="p-location" type="text" class="form-input" placeholder="e.g. Austin, TX" />
-        </div>
-        <div class="form-field">
-          <label class="form-label" for="p-photo">Photo URL <span class="form-hint">(optional — paste a direct image link)</span></label>
-          <input id="p-photo" type="url" class="form-input" placeholder="https://…/photo.jpg" />
-        </div>
-      </div>
-
-      <div class="form-divider"></div>
-      <div class="form-sub-label">Links</div>
-
-      <div class="form-row three">
-        <div class="form-field">
-          <label class="form-label" for="p-linkedin">LinkedIn URL</label>
-          <input id="p-linkedin" type="url" class="form-input" placeholder="https://linkedin.com/in/…" />
-        </div>
-        <div class="form-field">
-          <label class="form-label" for="p-github">GitHub URL</label>
-          <input id="p-github" type="url" class="form-input" placeholder="https://github.com/…" />
-        </div>
-        <div class="form-field">
-          <label class="form-label" for="p-email">Email Address</label>
-          <input id="p-email" type="email" class="form-input" placeholder="you@example.com" />
-        </div>
-      </div>
-
+      <button class="btn btn-green" style="margin-top:12px;" onclick="saveGHSettings()">Save settings</button>
     </div>
   </div>
 
-  <!-- CASE STUDIES -->
-  <div class="form-section">
-    <div class="form-section-title">Case Studies</div>
-    <div class="form-section-sub">Each case maps to one incident or lab exercise</div>
+  <!-- PROFILE -->
+  <div class="ed-section">
+    <div class="ed-section-title">Profile</div>
+    <div class="ed-section-sub">Your identity — shown in the header of the portfolio</div>
+    <div class="ed-panel">
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label">Full Name</label>
+          <input id="p-name" type="text" class="form-input" placeholder="Your full name" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">Role / Title</label>
+          <input id="p-role" type="text" class="form-input" placeholder="e.g. Security Analyst II · Blue Team" />
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="form-field">
+          <label class="form-label">Tagline <span class="form-hint">— one sentence, your focus areas</span></label>
+          <input id="p-tagline" type="text" class="form-input" placeholder="What you specialise in and what you're working toward" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label">Location</label>
+          <input id="p-location" type="text" class="form-input" placeholder="City, Country" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">Photo URL <span class="form-hint">optional</span></label>
+          <input id="p-photo" type="url" class="form-input" placeholder="https://…/photo.jpg" />
+        </div>
+      </div>
+      <div class="form-divider"></div>
+      <div class="sub-label">Links</div>
+      <div class="form-row three">
+        <div class="form-field">
+          <label class="form-label">LinkedIn</label>
+          <input id="p-linkedin" type="url" class="form-input" placeholder="https://linkedin.com/in/…" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">GitHub</label>
+          <input id="p-github" type="url" class="form-input" placeholder="https://github.com/…" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">Email</label>
+          <input id="p-email" type="email" class="form-input" placeholder="you@example.com" />
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <div class="cases-container" id="cases-container"></div>
+  <!-- ALERT INVESTIGATIONS -->
+  <div class="ed-section">
+    <div class="ed-section-title">Alert Investigations</div>
+    <div class="ed-section-sub">One entry per completed alert triage in the SOCSIM lab</div>
+    <div class="inv-container" id="alerts-container"></div>
+    <button class="btn btn-add" style="margin-top:14px;width:100%;justify-content:center;" onclick="addAlert()">+ Add Alert Investigation</button>
+  </div>
 
-    <button class="btn btn-add" style="margin-top:16px;width:100%;justify-content:center;" onclick="addCase()">
-      + Add Case Study
-    </button>
+  <!-- BEC CASE DROPS -->
+  <div class="ed-section">
+    <div class="ed-section-title">BEC Case Drops</div>
+    <div class="ed-section-sub">One entry per completed BEC investigation in the SOCSIM lab</div>
+    <div class="inv-container" id="bec-container"></div>
+    <button class="btn btn-add" style="margin-top:14px;width:100%;justify-content:center;" onclick="addBEC()">+ Add BEC Case Drop</button>
   </div>
 
 </div>
 
-<!-- ── STICKY ACTION BAR ───────────────────────────────── -->
+<!-- ── ACTION BAR ──────────────────────────────────── -->
 <div class="action-bar">
-  <div class="action-bar-hint">Fill the form → download → upload to /src/data/ on GitHub → wait ~60 s → live.</div>
-  <button class="btn btn-primary" onclick="generateJSON()">⬇ Download portfolio.json</button>
+  <div class="action-bar-hint">Fill → ⬆ Publish to GitHub → site updates in ~60 s</div>
+  <div class="action-bar-right">
+    <button class="btn btn-sm" onclick="downloadJSON()">⬇ Download JSON</button>
+    <button class="btn btn-primary" onclick="publishToGitHub()">⬆ Publish to GitHub</button>
+  </div>
 </div>
 
 <script>
-  /* ── HELPERS ──────────────────────────────────────────── */
-  function esc(str) {
-    return String(str ?? '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-  }
+/* ═══════════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════════ */
+const esc = s => String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const val = el => (el?.value??'').trim();
+let alertCount = 0, becCount = 0;
 
-  function val(el) { return (el?.value ?? '').trim(); }
+function showNotif(msg, type='success', ms=5000) {
+  const n = document.getElementById('notif');
+  n.textContent = msg;
+  n.className = type;
+  n.style.display = 'block';
+  n.style.opacity = '1';
+  setTimeout(() => { n.style.opacity='0'; setTimeout(()=>n.style.display='none',300); }, ms);
+}
 
-  let caseCounter = 0;
+/* ═══════════════════════════════════════════════════
+   GITHUB SETTINGS
+═══════════════════════════════════════════════════ */
+function toggleGHPanel() {
+  const body = document.getElementById('gh-body');
+  const caret = document.getElementById('gh-caret');
+  const hidden = body.classList.toggle('hidden');
+  caret.textContent = hidden ? '▶' : '▼';
+}
 
-  /* ── CASE BLOCK TEMPLATE ─────────────────────────────── */
-  function caseBlockHTML(uid, num) {
-    return `
-    <div class="case-block" data-uid="${uid}">
-      <div class="case-block-header">
-        <span class="case-block-num">Case Study #${num}</span>
-        <button class="btn btn-danger" onclick="removeCase('${uid}')">Remove</button>
-      </div>
-      <div class="case-block-body">
+function saveGHSettings() {
+  const owner = val(document.getElementById('gh-owner'));
+  const repo  = val(document.getElementById('gh-repo'));
+  const token = val(document.getElementById('gh-token'));
+  if (!owner || !repo || !token) { showNotif('Fill in all three GitHub fields.', 'error'); return; }
+  localStorage.setItem('gh_owner', owner);
+  localStorage.setItem('gh_repo',  repo);
+  localStorage.setItem('gh_token', token);
+  updateGHStatus();
+  toggleGHPanel();
+  showNotif('GitHub settings saved.');
+}
 
-        <div class="case-block-subsection">
-          <div class="form-row">
-            <div class="form-field">
-              <label class="form-label">Case ID <span class="form-hint">(e.g. BEC-2024-001)</span></label>
-              <input type="text" class="form-input" data-field="id" placeholder="BEC-2025-001" />
-            </div>
-            <div class="form-field">
-              <label class="form-label">Title</label>
-              <input type="text" class="form-input" data-field="title" placeholder="Descriptive incident title" />
-            </div>
-          </div>
-          <div class="form-row full">
-            <div class="form-field">
-              <label class="form-label">Summary <span class="form-hint">(2–3 sentences, key metrics)</span></label>
-              <textarea class="form-textarea" data-field="summary" rows="3" placeholder="What happened, how it was found, outcome."></textarea>
-            </div>
-          </div>
+function loadGHSettings() {
+  const owner = localStorage.getItem('gh_owner') ?? '';
+  const repo  = localStorage.getItem('gh_repo')  ?? '';
+  const token = localStorage.getItem('gh_token') ?? '';
+  document.getElementById('gh-owner').value = owner;
+  document.getElementById('gh-repo').value  = repo;
+  document.getElementById('gh-token').value = token;
+  updateGHStatus();
+  if (owner && repo && token) toggleGHPanel(); // collapse if already set
+}
+
+function updateGHStatus() {
+  const connected = !!(localStorage.getItem('gh_owner') && localStorage.getItem('gh_token'));
+  document.getElementById('gh-status').style.display = connected ? 'inline-flex' : 'none';
+}
+
+/* ═══════════════════════════════════════════════════
+   ALERT BLOCK TEMPLATE
+═══════════════════════════════════════════════════ */
+function alertBlockHTML(uid, num) {
+  return `<div class="inv-block" data-uid="${uid}" data-type="alert">
+  <div class="inv-block-header">
+    <span class="inv-type-badge badge-alert">Alert</span>
+    <span class="inv-num">#${num}</span>
+    <button class="btn btn-danger" onclick="removeBlock('${uid}')">Remove</button>
+  </div>
+  <div class="inv-body">
+
+    <div class="inv-sub">
+      <div class="form-row four">
+        <div class="form-field">
+          <label class="form-label">Case ID</label>
+          <input type="text" class="form-input" data-f="id" placeholder="ALT-001" />
         </div>
-
-        <div class="form-divider"></div>
-
-        <div class="case-block-subsection">
-          <div class="form-sub-label">Alert Trigger</div>
-          <textarea class="form-textarea" data-field="alert" rows="4" placeholder="Describe the alert that opened the incident — tool name, rule name, timestamp, key indicators."></textarea>
+        <div class="form-field">
+          <label class="form-label">Date Investigated</label>
+          <input type="date" class="form-input" data-f="date" />
         </div>
-
-        <div class="form-divider"></div>
-
-        <div class="case-block-subsection">
-          <div class="form-sub-label">Methodology</div>
-          <input type="text" class="form-input" data-field="methodology" list="methodology-list" placeholder="e.g. PICERL" style="max-width:320px;" />
-          <datalist id="methodology-list">
-            <option value="PICERL">
-            <option value="PICERF">
-            <option value="MITRE ATT&amp;CK">
-            <option value="NIST CSF">
-            <option value="SANS">
-            <option value="Diamond Model">
-          </datalist>
+        <div class="form-field">
+          <label class="form-label">Severity</label>
+          <select class="form-select" data-f="severity">
+            <option>Critical</option><option selected>High</option><option>Medium</option><option>Low</option>
+          </select>
         </div>
-
-        <div class="form-divider"></div>
-
-        <div class="case-block-subsection">
-          <div class="form-sub-label">Timeline</div>
-          <div class="repeater-rows" data-repeater="timeline"></div>
-          <button class="btn btn-add" onclick="addTimelineRow(this)">+ Add Entry</button>
+        <div class="form-field">
+          <label class="form-label">Alert ID <span class="form-hint">optional</span></label>
+          <input type="text" class="form-input" data-f="alertId" placeholder="MDE-ALERT-…" />
         </div>
-
-        <div class="form-divider"></div>
-
-        <div class="case-block-subsection">
-          <div class="form-sub-label">Root Cause</div>
-          <textarea class="form-textarea" data-field="rootCause" rows="4" placeholder="Technical explanation of how the incident originated."></textarea>
+      </div>
+      <div class="form-row full">
+        <div class="form-field">
+          <label class="form-label">Alert Name</label>
+          <input type="text" class="form-input" data-f="alertName" placeholder="e.g. Suspicious Encoded PowerShell Command" />
         </div>
-
-        <div class="form-divider"></div>
-
-        <div class="case-block-subsection">
-          <div class="form-sub-label">Containment</div>
-          <textarea class="form-textarea" data-field="containment" rows="4" placeholder="Actions taken to stop and remediate the incident."></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label">Host / Account Affected</label>
+          <input type="text" class="form-input" data-f="hostOrAccount" placeholder="HOSTNAME / user@domain.com" />
         </div>
-
-        <div class="form-divider"></div>
-
-        <div class="case-block-subsection">
-          <div class="form-sub-label">Indicators of Compromise</div>
-          <div class="repeater-rows" data-repeater="iocs"></div>
-          <button class="btn btn-add" onclick="addIoCRow(this)">+ Add IoC</button>
+        <div class="form-field">
+          <label class="form-label">Date & Time of Alert</label>
+          <input type="text" class="form-input" data-f="dateTime" placeholder="14 Nov 2024 09:47 UTC" />
         </div>
+      </div>
+    </div>
 
-        <div class="form-divider"></div>
+    <div class="form-divider"></div>
 
-        <div class="case-block-subsection">
-          <div class="form-sub-label">Detection Improvements</div>
-          <div class="repeater-rows" data-repeater="detections"></div>
-          <button class="btn btn-add" onclick="addDetectionRow(this)">+ Add Detection</button>
+    <div class="inv-sub">
+      <div class="sub-label">Alert Summary</div>
+      <div class="form-row full">
+        <div class="form-field">
+          <label class="form-label">What triggered the alert</label>
+          <textarea class="form-textarea" data-f="whatTriggered" rows="2" placeholder="Which rule fired, on which process/activity."></textarea>
         </div>
-
-        <div class="form-divider"></div>
-
-        <div class="case-block-subsection">
-          <div class="form-sub-label">Tools Used <span class="form-hint">(one per line)</span></div>
-          <textarea class="form-textarea" data-field="tools" rows="4" placeholder="Microsoft Sentinel&#10;KQL&#10;AbuseIPDB&#10;VirusTotal"></textarea>
+      </div>
+      <div class="form-row full">
+        <div class="form-field">
+          <label class="form-label">Why it triggered <span class="form-hint">the detection logic</span></label>
+          <textarea class="form-textarea" data-f="whyTriggered" rows="2" placeholder="The detection rule / logic that caused the alert to fire."></textarea>
         </div>
+      </div>
+    </div>
 
-        <div class="form-divider"></div>
+    <div class="form-divider"></div>
 
-        <div class="case-block-subsection">
-          <label class="verified-row">
-            <input type="checkbox" data-field="verified" />
-            <span class="verified-label">
-              <strong>SOCSIM Verified</strong> — mark this case as completed in a live SOCSIM lab
-            </span>
-          </label>
+    <div class="inv-sub">
+      <div class="sub-label">Investigation Findings</div>
+      <div class="form-row full">
+        <div class="form-field">
+          <label class="form-label">What happened</label>
+          <textarea class="form-textarea" data-f="whatHappened" rows="4" placeholder="Walk through what actually occurred — the attack or activity in plain terms."></textarea>
         </div>
-
       </div>
-    </div>`;
-  }
-
-  /* ── TIMELINE ROW ────────────────────────────────────── */
-  function timelineRowHTML(time, event) {
-    return `
-    <div class="repeater-row timeline-row">
-      <div class="repeater-cell">
-        <span class="repeater-cell-label">Time</span>
-        <input type="text" class="form-input" data-sub="time" value="${esc(time)}" placeholder="02:14 UTC" />
+      <div class="form-row full">
+        <div class="form-field">
+          <label class="form-label">Evidence <span class="form-hint">artefacts, log entries, indicators</span></label>
+          <textarea class="form-textarea" data-f="evidence" rows="4" placeholder="Process trees, decoded commands, network connections, etc."></textarea>
+        </div>
       </div>
-      <div class="repeater-cell">
-        <span class="repeater-cell-label">Event</span>
-        <input type="text" class="form-input" data-sub="event" value="${esc(event)}" placeholder="What happened at this timestamp" />
+      <div class="form-row three">
+        <div class="form-field">
+          <label class="form-label">Was the activity successful?</label>
+          <select class="form-select" data-f="wasSuccessful">
+            <option>Yes</option><option selected>No</option><option>Unknown</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Verdict</label>
+          <select class="form-select" data-f="verdict">
+            <option selected>Malicious</option><option>Non-malicious</option><option>Suspicious</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Categorisation</label>
+          <select class="form-select" data-f="categorisation">
+            <option value="TP" selected>True Positive (TP)</option>
+            <option value="BTP">Benign True Positive (BTP)</option>
+            <option value="FP">False Positive (FP)</option>
+          </select>
+        </div>
       </div>
-      <div class="row-remove-btn">
-        <button class="btn btn-danger" onclick="this.closest('.repeater-row').remove()">×</button>
+      <div class="form-row full">
+        <div class="form-field">
+          <label class="form-label">Verdict Justification</label>
+          <textarea class="form-textarea" data-f="verdictJustification" rows="3" placeholder="Why did you reach this conclusion? Be specific."></textarea>
+        </div>
       </div>
-    </div>`;
-  }
+    </div>
 
-  /* ── IOC ROW ─────────────────────────────────────────── */
-  function iocRowHTML(type, value, context) {
-    const types = ['IP', 'Domain', 'Email', 'URL', 'Hash', 'Token', 'File', 'Registry', 'Other'];
-    const opts = types.map(t => `<option value="${t}"${t === type ? ' selected' : ''}>${t}</option>`).join('');
-    return `
-    <div class="repeater-row ioc-row">
-      <div class="repeater-cell">
-        <span class="repeater-cell-label">Type</span>
-        <select class="form-select" data-sub="type">${opts}</select>
+    <div class="form-divider"></div>
+
+    <div class="inv-sub">
+      <div class="sub-label">Investigation Steps</div>
+      <div class="rep-rows" data-rep="steps"></div>
+      <button class="btn btn-add btn-sm" onclick="addStep(this)">+ Add Step</button>
+    </div>
+
+    <div class="form-divider"></div>
+
+    <div class="inv-sub">
+      <div class="sub-label">KQL Queries Used <span class="form-hint" style="margin-left:6px;">paste raw KQL — line breaks preserved</span></div>
+      <textarea class="form-textarea" data-f="queries" rows="5" style="font-family:'JetBrains Mono',monospace;font-size:.78rem;" placeholder="// Paste your KQL queries here, separated by blank lines"></textarea>
+    </div>
+
+    <div class="form-divider"></div>
+
+    <div class="inv-sub">
+      <div class="sub-label">Recommended Actions</div>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label">Escalation</label>
+          <select class="form-select" data-f="escalation">
+            <option>Urgent</option><option>Non-urgent</option><option>None</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Alert Tuning</label>
+          <input type="text" class="form-input" data-f="alertTuning" placeholder="Tune recommended / No tuning required" />
+        </div>
       </div>
-      <div class="repeater-cell">
-        <span class="repeater-cell-label">Value</span>
-        <input type="text" class="form-input" data-sub="value" value="${esc(value)}" placeholder="185.220.101.47" />
+      <div class="form-row full">
+        <div class="form-field">
+          <label class="form-label">Containment / Next Steps</label>
+          <textarea class="form-textarea" data-f="containment" rows="3" placeholder="What actions were taken or should be taken?"></textarea>
+        </div>
       </div>
-      <div class="repeater-cell">
-        <span class="repeater-cell-label">Context</span>
-        <input type="text" class="form-input" data-sub="context" value="${esc(context)}" placeholder="Why this is significant" />
+    </div>
+
+    <div class="form-divider"></div>
+
+    <div class="inv-sub">
+      <div class="form-row full">
+        <div class="form-field">
+          <label class="form-label">Lessons Learned</label>
+          <textarea class="form-textarea" data-f="lessonsLearned" rows="3" placeholder="What would you do differently? What does this case teach you?"></textarea>
+        </div>
       </div>
-      <div class="row-remove-btn">
-        <button class="btn btn-danger" onclick="this.closest('.repeater-row').remove()">×</button>
+      <div class="form-row full" style="margin-top:4px;">
+        <div class="form-field">
+          <label class="form-label">Tools Used <span class="form-hint">one per line</span></label>
+          <textarea class="form-textarea" data-f="tools" rows="3" placeholder="Microsoft Defender for Endpoint&#10;KQL&#10;CyberChef"></textarea>
+        </div>
       </div>
-    </div>`;
-  }
+    </div>
 
-  /* ── DETECTION ROW ───────────────────────────────────── */
-  function detectionRowHTML(text) {
-    return `
-    <div class="repeater-row detection-row">
-      <div class="repeater-cell">
-        <textarea class="form-textarea" data-sub="detection" rows="2" placeholder="Describe a new detection rule, playbook, or control improvement.">${esc(text)}</textarea>
+    <div class="form-divider"></div>
+
+    <div class="inv-sub">
+      <div class="verified-row">
+        <input type="checkbox" data-f="verified" id="ver-${uid}" />
+        <label for="ver-${uid}"><strong>SOCSIM Verified</strong> — mark as completed in a live SOCSIM lab</label>
       </div>
-      <div class="row-remove-btn">
-        <button class="btn btn-danger" onclick="this.closest('.repeater-row').remove()">×</button>
+    </div>
+
+  </div>
+</div>`;
+}
+
+/* ═══════════════════════════════════════════════════
+   BEC BLOCK TEMPLATE
+═══════════════════════════════════════════════════ */
+function becBlockHTML(uid, num) {
+  return `<div class="inv-block" data-uid="${uid}" data-type="bec">
+  <div class="inv-block-header">
+    <span class="inv-type-badge badge-bec">BEC Case Drop</span>
+    <span class="inv-num">#${num}</span>
+    <button class="btn btn-danger" onclick="removeBlock('${uid}')">Remove</button>
+  </div>
+  <div class="inv-body">
+
+    <div class="inv-sub">
+      <div class="form-row four">
+        <div class="form-field">
+          <label class="form-label">Case ID</label>
+          <input type="text" class="form-input" data-f="id" placeholder="BEC-001" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">Case Reference</label>
+          <input type="text" class="form-input" data-f="caseReference" placeholder="WDL-BEC-2024-001" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">Incident From</label>
+          <input type="date" class="form-input" data-f="incidentDateFrom" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">Incident To</label>
+          <input type="date" class="form-input" data-f="incidentDateTo" />
+        </div>
       </div>
-    </div>`;
-  }
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label">Case Name</label>
+          <input type="text" class="form-input" data-f="caseName" placeholder="BEC Case Drop 1 — Brief Description" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">Affected Account</label>
+          <input type="text" class="form-input" data-f="affectedAccount" placeholder="user@domain.com" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label">Investigation Date</label>
+          <input type="date" class="form-input" data-f="investigationDate" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">PDF Report URL <span class="form-hint">optional — link to hosted PDF</span></label>
+          <input type="url" class="form-input" data-f="pdfUrl" placeholder="https://…/report.pdf" />
+        </div>
+      </div>
+    </div>
 
-  /* ── ADD HELPERS ─────────────────────────────────────── */
-  function addCase(data) {
-    caseCounter++;
-    const uid = 'case-' + Date.now() + '-' + caseCounter;
-    const num = caseCounter;
-    const container = document.getElementById('cases-container');
-    const div = document.createElement('div');
-    div.innerHTML = caseBlockHTML(uid, num);
-    const block = div.firstElementChild;
-    container.appendChild(block);
+    <div class="form-divider"></div>
 
-    if (data) populateCaseBlock(block, data);
-  }
+    <div class="inv-sub">
+      <div class="form-row full">
+        <div class="form-field">
+          <label class="form-label">Attack Narrative <span class="form-hint">plain-English summary — write this last, from a non-technical perspective</span></label>
+          <textarea class="form-textarea" data-f="attackNarrative" rows="5" placeholder="What happened, how, and the outcome. Keep it clear enough for a non-technical stakeholder."></textarea>
+        </div>
+      </div>
+    </div>
 
-  function removeCase(uid) {
-    document.querySelector(`.case-block[data-uid="${uid}"]`)?.remove();
-  }
+    <div class="form-divider"></div>
 
-  function addTimelineRow(btn, time, event) {
-    const container = btn.previousElementSibling;
-    const div = document.createElement('div');
-    div.innerHTML = timelineRowHTML(time ?? '', event ?? '');
-    container.appendChild(div.firstElementChild);
-  }
+    <div class="inv-sub">
+      <div class="sub-label">Timeline of Events <span class="form-hint" style="margin-left:6px;">UTC throughout</span></div>
+      <div class="rep-rows" data-rep="timeline"></div>
+      <button class="btn btn-add btn-sm" onclick="addBECTimelineRow(this)">+ Add Timeline Entry</button>
+    </div>
 
-  function addIoCRow(btn, type, value, context) {
-    const container = btn.previousElementSibling;
-    const div = document.createElement('div');
-    div.innerHTML = iocRowHTML(type ?? 'IP', value ?? '', context ?? '');
-    container.appendChild(div.firstElementChild);
-  }
+    <div class="form-divider"></div>
 
-  function addDetectionRow(btn, text) {
-    const container = btn.previousElementSibling;
-    const div = document.createElement('div');
-    div.innerHTML = detectionRowHTML(text ?? '');
-    container.appendChild(div.firstElementChild);
-  }
+    <div class="inv-sub">
+      <div class="sub-label">Findings</div>
+      <div class="form-row full" style="margin-bottom:12px;">
+        <div class="form-field">
+          <label class="form-label">3.1 — Initial Access</label>
+          <textarea class="form-textarea" data-f="initialAccess" rows="4" placeholder="How did the threat actor gain access? First confirmed malicious sign-in, source IP, application used."></textarea>
+        </div>
+      </div>
+      <div class="form-row full" style="margin-bottom:12px;">
+        <div class="form-field">
+          <label class="form-label">3.2 — Unauthorised Activity</label>
+          <textarea class="form-textarea" data-f="unauthorisedActivity" rows="4" placeholder="What did the threat actor do once inside? Inbox rules, sent emails, account changes, etc."></textarea>
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="form-field">
+          <label class="form-label">3.3 — Data Access</label>
+          <textarea class="form-textarea" data-f="dataAccess" rows="4" placeholder="What data was accessed or potentially exfiltrated? Cover Exchange and SharePoint/OneDrive separately."></textarea>
+        </div>
+      </div>
+    </div>
 
-  /* ── POPULATE CASE BLOCK FROM DATA ──────────────────── */
-  function populateCaseBlock(block, data) {
-    const f = (field) => block.querySelector(`[data-field="${field}"]`);
+    <div class="form-divider"></div>
 
-    if (f('id')) f('id').value = data.id ?? '';
-    if (f('title')) f('title').value = data.title ?? '';
-    if (f('summary')) f('summary').value = data.summary ?? '';
-    if (f('alert')) f('alert').value = data.alert ?? '';
-    if (f('methodology')) f('methodology').value = data.methodology ?? '';
-    if (f('rootCause')) f('rootCause').value = data.rootCause ?? '';
-    if (f('containment')) f('containment').value = data.containment ?? '';
-    if (f('tools')) f('tools').value = (data.tools ?? []).join('\n');
-    if (f('verified')) f('verified').checked = data.verified ?? false;
+    <div class="inv-sub">
+      <div class="form-row full">
+        <div class="form-field">
+          <label class="form-label">Lessons Learned</label>
+          <textarea class="form-textarea" data-f="lessonsLearned" rows="3" placeholder="What would you approach differently? What does this case teach you?"></textarea>
+        </div>
+      </div>
+      <div class="form-row full" style="margin-top:4px;">
+        <div class="form-field">
+          <label class="form-label">Tools Used <span class="form-hint">one per line</span></label>
+          <textarea class="form-textarea" data-f="tools" rows="3" placeholder="Microsoft Sentinel&#10;KQL&#10;Microsoft Graph API"></textarea>
+        </div>
+      </div>
+    </div>
 
-    const tlBtn = block.querySelector('[data-repeater="timeline"] + button');
-    (data.timeline ?? []).forEach(entry => addTimelineRow(tlBtn, entry.time, entry.event));
+    <div class="form-divider"></div>
 
-    const iocBtn = block.querySelector('[data-repeater="iocs"] + button');
-    (data.iocs ?? []).forEach(ioc => addIoCRow(iocBtn, ioc.type, ioc.value, ioc.context));
+    <div class="inv-sub">
+      <div class="verified-row">
+        <input type="checkbox" data-f="verified" id="ver-${uid}" />
+        <label for="ver-${uid}"><strong>SOCSIM Verified</strong> — mark as completed in a live SOCSIM lab</label>
+      </div>
+    </div>
 
-    const detBtn = block.querySelector('[data-repeater="detections"] + button');
-    (data.detections ?? []).forEach(d => addDetectionRow(detBtn, d));
-  }
+  </div>
+</div>`;
+}
 
-  /* ── GENERATE JSON ───────────────────────────────────── */
-  function generateJSON() {
-    const data = {
-      profile: {
-        name: val(document.getElementById('p-name')),
-        role: val(document.getElementById('p-role')),
-        tagline: val(document.getElementById('p-tagline')),
-        location: val(document.getElementById('p-location')),
-        photo: val(document.getElementById('p-photo')),
-        links: {
-          linkedin: val(document.getElementById('p-linkedin')),
-          github: val(document.getElementById('p-github')),
-          email: val(document.getElementById('p-email')),
-        },
-      },
-      cases: [],
-    };
+/* ═══════════════════════════════════════════════════
+   ROW TEMPLATES
+═══════════════════════════════════════════════════ */
+function stepRowHTML(text) {
+  return `<div class="rep-row step-row">
+    <div class="rep-cell">
+      <input type="text" class="form-input" data-sub="step" value="${esc(text)}" placeholder="Describe this investigation step" />
+    </div>
+    <div class="rep-remove"><button class="btn btn-danger" onclick="this.closest('.rep-row').remove()">×</button></div>
+  </div>`;
+}
 
-    document.querySelectorAll('.case-block').forEach(block => {
-      const f = (field) => block.querySelector(`[data-field="${field}"]`);
+function becTLRowHTML(time, activity, detail) {
+  return `<div class="rep-row bec-tl-row">
+    <div class="rep-cell">
+      <span class="rep-cell-label">Time (UTC)</span>
+      <input type="text" class="form-input" data-sub="time" value="${esc(time)}" placeholder="02:14 UTC" />
+    </div>
+    <div class="rep-cell">
+      <span class="rep-cell-label">Activity</span>
+      <input type="text" class="form-input" data-sub="activity" value="${esc(activity)}" placeholder="Short activity label" />
+    </div>
+    <div class="rep-cell">
+      <span class="rep-cell-label">Detail</span>
+      <input type="text" class="form-input" data-sub="detail" value="${esc(detail)}" placeholder="Longer description of what happened" />
+    </div>
+    <div class="rep-remove"><button class="btn btn-danger" onclick="this.closest('.rep-row').remove()">×</button></div>
+  </div>`;
+}
 
-      const toolsRaw = val(f('tools'));
-      const tools = toolsRaw
-        ? toolsRaw.split('\n').map(s => s.trim()).filter(Boolean)
-        : [];
+/* ═══════════════════════════════════════════════════
+   ADD / REMOVE BLOCKS
+═══════════════════════════════════════════════════ */
+function addAlert(data) {
+  alertCount++;
+  const uid = 'alt-' + Date.now() + alertCount;
+  const el = document.createElement('div');
+  el.innerHTML = alertBlockHTML(uid, alertCount);
+  document.getElementById('alerts-container').appendChild(el.firstElementChild);
+  if (data) populateAlertBlock(document.querySelector(`[data-uid="${uid}"]`), data);
+}
 
-      const timeline = [];
-      block.querySelectorAll('[data-repeater="timeline"] .repeater-row').forEach(row => {
-        const time = val(row.querySelector('[data-sub="time"]'));
-        const event = val(row.querySelector('[data-sub="event"]'));
-        if (time || event) timeline.push({ time, event });
-      });
+function addBEC(data) {
+  becCount++;
+  const uid = 'bec-' + Date.now() + becCount;
+  const el = document.createElement('div');
+  el.innerHTML = becBlockHTML(uid, becCount);
+  document.getElementById('bec-container').appendChild(el.firstElementChild);
+  if (data) populateBECBlock(document.querySelector(`[data-uid="${uid}"]`), data);
+}
 
-      const iocs = [];
-      block.querySelectorAll('[data-repeater="iocs"] .repeater-row').forEach(row => {
-        const type = val(row.querySelector('[data-sub="type"]'));
-        const value = val(row.querySelector('[data-sub="value"]'));
-        const context = val(row.querySelector('[data-sub="context"]'));
-        if (value) iocs.push({ type, value, context });
-      });
+function removeBlock(uid) {
+  document.querySelector(`[data-uid="${uid}"]`)?.remove();
+}
 
-      const detections = [];
-      block.querySelectorAll('[data-repeater="detections"] .repeater-row').forEach(row => {
-        const text = val(row.querySelector('[data-sub="detection"]'));
-        if (text) detections.push(text);
-      });
+function addStep(btn, text) {
+  const container = btn.previousElementSibling;
+  const el = document.createElement('div');
+  el.innerHTML = stepRowHTML(text ?? '');
+  container.appendChild(el.firstElementChild);
+}
 
-      data.cases.push({
-        id: val(f('id')),
-        title: val(f('title')),
-        summary: val(f('summary')),
-        alert: val(f('alert')),
-        methodology: val(f('methodology')),
-        timeline,
-        rootCause: val(f('rootCause')),
-        containment: val(f('containment')),
-        iocs,
-        detections,
-        tools,
-        verified: f('verified')?.checked ?? false,
-      });
+function addBECTimelineRow(btn, time, activity, detail) {
+  const container = btn.previousElementSibling;
+  const el = document.createElement('div');
+  el.innerHTML = becTLRowHTML(time ?? '', activity ?? '', detail ?? '');
+  container.appendChild(el.firstElementChild);
+}
+
+/* ═══════════════════════════════════════════════════
+   POPULATE FROM DATA
+═══════════════════════════════════════════════════ */
+function f(block, field) { return block.querySelector(`[data-f="${field}"]`); }
+
+function populateAlertBlock(block, d) {
+  const set = (field, v) => { const el = f(block, field); if (el) el.value = v ?? ''; };
+  set('id', d.id); set('alertName', d.alertName); set('alertId', d.alertId ?? '');
+  set('date', d.date); set('severity', d.severity); set('hostOrAccount', d.hostOrAccount);
+  set('dateTime', d.dateTime); set('whatTriggered', d.whatTriggered); set('whyTriggered', d.whyTriggered);
+  set('whatHappened', d.whatHappened); set('evidence', d.evidence); set('wasSuccessful', d.wasSuccessful);
+  set('verdict', d.verdict); set('categorisation', d.categorisation);
+  set('verdictJustification', d.verdictJustification); set('queries', d.queries ?? '');
+  set('escalation', d.escalation); set('alertTuning', d.alertTuning ?? '');
+  set('containment', d.containment); set('lessonsLearned', d.lessonsLearned);
+  set('tools', (d.tools ?? []).join('\n'));
+  const vc = f(block, 'verified'); if (vc) vc.checked = d.verified ?? false;
+
+  const stepBtn = block.querySelector('[data-rep="steps"] + button');
+  (d.investigationSteps ?? []).forEach(s => addStep(stepBtn, s));
+}
+
+function populateBECBlock(block, d) {
+  const set = (field, v) => { const el = f(block, field); if (el) el.value = v ?? ''; };
+  set('id', d.id); set('caseName', d.caseName); set('caseReference', d.caseReference);
+  set('affectedAccount', d.affectedAccount); set('incidentDateFrom', d.incidentDateFrom);
+  set('incidentDateTo', d.incidentDateTo); set('investigationDate', d.investigationDate);
+  set('attackNarrative', d.attackNarrative); set('initialAccess', d.initialAccess);
+  set('unauthorisedActivity', d.unauthorisedActivity); set('dataAccess', d.dataAccess);
+  set('lessonsLearned', d.lessonsLearned); set('tools', (d.tools ?? []).join('\n'));
+  set('pdfUrl', d.pdfUrl ?? '');
+  const vc = f(block, 'verified'); if (vc) vc.checked = d.verified ?? false;
+
+  const tlBtn = block.querySelector('[data-rep="timeline"] + button');
+  (d.timeline ?? []).forEach(e => addBECTimelineRow(tlBtn, e.time, e.activity, e.detail ?? ''));
+}
+
+/* ═══════════════════════════════════════════════════
+   COLLECT FORM DATA
+═══════════════════════════════════════════════════ */
+function collectData() {
+  const profile = {
+    name:     val(document.getElementById('p-name')),
+    role:     val(document.getElementById('p-role')),
+    tagline:  val(document.getElementById('p-tagline')),
+    location: val(document.getElementById('p-location')),
+    photo:    val(document.getElementById('p-photo')),
+    links: {
+      linkedin: val(document.getElementById('p-linkedin')),
+      github:   val(document.getElementById('p-github')),
+      email:    val(document.getElementById('p-email')),
+    },
+  };
+
+  const alerts = [];
+  document.querySelectorAll('[data-type="alert"]').forEach(block => {
+    const get = field => val(f(block, field));
+    const tools = get('tools').split('\n').map(s=>s.trim()).filter(Boolean);
+    const steps = [];
+    block.querySelectorAll('[data-rep="steps"] [data-sub="step"]').forEach(el => {
+      const s = val(el); if (s) steps.push(s);
     });
+    alerts.push({
+      id: get('id'), alertName: get('alertName'), alertId: get('alertId'),
+      date: get('date'), severity: get('severity'), hostOrAccount: get('hostOrAccount'),
+      dateTime: get('dateTime'), whatTriggered: get('whatTriggered'),
+      whyTriggered: get('whyTriggered'), whatHappened: get('whatHappened'),
+      evidence: get('evidence'), wasSuccessful: get('wasSuccessful'),
+      verdict: get('verdict'), verdictJustification: get('verdictJustification'),
+      investigationSteps: steps, queries: get('queries'),
+      categorisation: get('categorisation'), escalation: get('escalation'),
+      containment: get('containment'), alertTuning: get('alertTuning'),
+      lessonsLearned: get('lessonsLearned'), tools,
+      verified: f(block, 'verified')?.checked ?? false,
+    });
+  });
 
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'portfolio.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+  const bec = [];
+  document.querySelectorAll('[data-type="bec"]').forEach(block => {
+    const get = field => val(f(block, field));
+    const tools = get('tools').split('\n').map(s=>s.trim()).filter(Boolean);
+    const timeline = [];
+    block.querySelectorAll('[data-rep="timeline"] .rep-row').forEach(row => {
+      const time     = val(row.querySelector('[data-sub="time"]'));
+      const activity = val(row.querySelector('[data-sub="activity"]'));
+      const detail   = val(row.querySelector('[data-sub="detail"]'));
+      if (time || activity) timeline.push({ time, activity, detail });
+    });
+    bec.push({
+      id: get('id'), caseName: get('caseName'), caseReference: get('caseReference'),
+      affectedAccount: get('affectedAccount'), incidentDateFrom: get('incidentDateFrom'),
+      incidentDateTo: get('incidentDateTo'), investigationDate: get('investigationDate'),
+      attackNarrative: get('attackNarrative'), timeline,
+      initialAccess: get('initialAccess'), unauthorisedActivity: get('unauthorisedActivity'),
+      dataAccess: get('dataAccess'), lessonsLearned: get('lessonsLearned'),
+      tools, pdfUrl: get('pdfUrl'),
+      verified: f(block, 'verified')?.checked ?? false,
+    });
+  });
+
+  return { profile, alerts, bec };
+}
+
+/* ═══════════════════════════════════════════════════
+   DOWNLOAD JSON
+═══════════════════════════════════════════════════ */
+function downloadJSON() {
+  const json = JSON.stringify(collectData(), null, 2);
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([json], {type:'application/json'}));
+  a.download = 'portfolio.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+
+/* ═══════════════════════════════════════════════════
+   PUBLISH TO GITHUB
+═══════════════════════════════════════════════════ */
+async function publishToGitHub() {
+  const owner = localStorage.getItem('gh_owner')?.trim();
+  const repo  = localStorage.getItem('gh_repo')?.trim();
+  const token = localStorage.getItem('gh_token')?.trim();
+
+  if (!owner || !repo || !token) {
+    showNotif('Open the ⚙ GitHub Settings panel and save your details first.', 'error', 6000);
+    return;
   }
 
-  /* ── LOAD JSON ───────────────────────────────────────── */
-  function loadJSON(input) {
-    const file = input.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const data = JSON.parse(e.target.result);
-        populateForm(data);
-      } catch {
-        alert('Could not parse the file. Make sure it is a valid portfolio.json.');
-      }
-    };
-    reader.readAsText(file);
-    input.value = '';
+  const jsonStr = JSON.stringify(collectData(), null, 2);
+  // UTF-8 safe base64
+  const encoded = btoa(unescape(encodeURIComponent(jsonStr)));
+  const url = `https://api.github.com/repos/${owner}/${repo}/contents/src/data/portfolio.json`;
+  const headers = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' };
+
+  showNotif('Publishing…', 'success', 60000);
+
+  // Get current SHA (needed for update)
+  let sha;
+  try {
+    const res = await fetch(url, { headers });
+    if (res.ok) sha = (await res.json()).sha;
+  } catch {}
+
+  const body = { message: 'Update portfolio via SOCSIM editor', content: encoded };
+  if (sha) body.sha = sha;
+
+  try {
+    const res = await fetch(url, { method: 'PUT', headers, body: JSON.stringify(body) });
+    if (res.ok) {
+      showNotif(`✓ Published! Site rebuilds in ~60 s → github.com/${owner}/${repo}/actions`, 'success', 8000);
+    } else {
+      const err = await res.json();
+      showNotif(`✗ ${err.message ?? 'GitHub returned an error. Check your token and repo name.'}`, 'error', 8000);
+    }
+  } catch (e) {
+    showNotif(`✗ Network error: ${e.message}`, 'error', 8000);
   }
+}
 
-  function populateForm(data) {
-    const p = data.profile ?? {};
-    document.getElementById('p-name').value = p.name ?? '';
-    document.getElementById('p-role').value = p.role ?? '';
-    document.getElementById('p-tagline').value = p.tagline ?? '';
-    document.getElementById('p-location').value = p.location ?? '';
-    document.getElementById('p-photo').value = p.photo ?? '';
-    document.getElementById('p-linkedin').value = p.links?.linkedin ?? '';
-    document.getElementById('p-github').value = p.links?.github ?? '';
-    document.getElementById('p-email').value = p.links?.email ?? '';
+/* ═══════════════════════════════════════════════════
+   LOAD JSON
+═══════════════════════════════════════════════════ */
+function loadJSON(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const d = JSON.parse(e.target.result);
+      populateForm(d);
+      showNotif('Portfolio loaded — check all fields then publish.');
+    } catch {
+      showNotif('Could not parse the file — make sure it is a valid portfolio.json.', 'error');
+    }
+  };
+  reader.readAsText(file);
+  input.value = '';
+}
 
-    const container = document.getElementById('cases-container');
-    container.innerHTML = '';
-    caseCounter = 0;
+function populateForm(d) {
+  const p = d.profile ?? {};
+  document.getElementById('p-name').value     = p.name     ?? '';
+  document.getElementById('p-role').value     = p.role     ?? '';
+  document.getElementById('p-tagline').value  = p.tagline  ?? '';
+  document.getElementById('p-location').value = p.location ?? '';
+  document.getElementById('p-photo').value    = p.photo    ?? '';
+  document.getElementById('p-linkedin').value = p.links?.linkedin ?? '';
+  document.getElementById('p-github').value   = p.links?.github   ?? '';
+  document.getElementById('p-email').value    = p.links?.email    ?? '';
 
-    (data.cases ?? []).forEach(c => addCase(c));
-  }
+  document.getElementById('alerts-container').innerHTML = '';
+  alertCount = 0;
+  (d.alerts ?? []).forEach(a => addAlert(a));
 
-  /* ── INIT ────────────────────────────────────────────── */
-  addCase();
+  document.getElementById('bec-container').innerHTML = '';
+  becCount = 0;
+  (d.bec ?? []).forEach(b => addBEC(b));
+}
+
+/* ═══════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════ */
+loadGHSettings();
 </script>
 </body>
 </html>

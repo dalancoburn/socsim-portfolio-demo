@@ -1,25 +1,43 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProfileHeader from '../components/ProfileHeader.astro';
-import CaseStudyCard from '../components/CaseStudyCard.astro';
+import AlertCard from '../components/AlertCard.astro';
+import BECCard from '../components/BECCard.astro';
 import portfolio from '../data/portfolio.json';
 
 const base = import.meta.env.BASE_URL;
 const pageTitle = `${portfolio.profile.name} — SOCSIM Portfolio`;
 ---
 <BaseLayout title={pageTitle}>
+
   <ProfileHeader profile={portfolio.profile} />
 
-  <div class="section-label">Case Studies</div>
+  <!-- Alert Investigations -->
+  <div class="section-label">Alert Investigations</div>
 
-  {portfolio.cases.length === 0 ? (
-    <div class="empty-state">No case studies yet.</div>
+  {portfolio.alerts.length === 0 ? (
+    <div class="empty-state">No alert investigations yet.</div>
   ) : (
-    portfolio.cases.map((c) => (
-      <CaseStudyCard
-        caseData={c}
-        detailUrl={`${base}cases/${c.id}`}
+    portfolio.alerts.map((a) => (
+      <AlertCard
+        alert={a}
+        detailUrl={`${base}alerts/${a.id}`}
       />
     ))
   )}
+
+  <!-- BEC Case Drops -->
+  <div class="section-label" style="margin-top:48px;">BEC Case Drops</div>
+
+  {portfolio.bec.length === 0 ? (
+    <div class="empty-state">No BEC cases yet.</div>
+  ) : (
+    portfolio.bec.map((b) => (
+      <BECCard
+        bec={b}
+        detailUrl={`${base}bec/${b.id}`}
+      />
+    ))
+  )}
+
 </BaseLayout>

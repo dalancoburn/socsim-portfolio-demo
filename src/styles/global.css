@@ -480,6 +480,190 @@ nav.site-nav {
   background: var(--surface-2);
 }
 
+/* ── SEVERITY BADGES ───────────────────────────────────────── */
+.severity-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 3px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.severity-critical { color: #ef4444; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); }
+.severity-high     { color: #f07a22; background: rgba(240,122,34,0.1); border: 1px solid rgba(240,122,34,0.3); }
+.severity-medium   { color: #eab308; background: rgba(234,179,8,0.1);  border: 1px solid rgba(234,179,8,0.3); }
+.severity-low      { color: #6b7280; background: rgba(107,114,128,0.1); border: 1px solid rgba(107,114,128,0.3); }
+
+/* ── VERDICT / CATEGORISATION BADGES ──────────────────────── */
+.verdict-badge, .cat-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 3px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.verdict-malicious     { color: #ef4444; background: rgba(239,68,68,0.1);   border: 1px solid rgba(239,68,68,0.3); }
+.verdict-nonmalicious  { color: #22c55e; background: rgba(34,197,94,0.1);   border: 1px solid rgba(34,197,94,0.3); }
+.verdict-suspicious    { color: #eab308; background: rgba(234,179,8,0.1);   border: 1px solid rgba(234,179,8,0.3); }
+
+.cat-tp   { color: #ef4444; background: rgba(239,68,68,0.08);   border: 1px solid rgba(239,68,68,0.25); }
+.cat-btp  { color: #eab308; background: rgba(234,179,8,0.08);   border: 1px solid rgba(234,179,8,0.25); }
+.cat-fp   { color: #6b7280; background: rgba(107,114,128,0.08); border: 1px solid rgba(107,114,128,0.25); }
+
+/* ── KQL BLOCK ─────────────────────────────────────────────── */
+.kql-block {
+  background: #0a0a0a;
+  border: 1px solid var(--border);
+  border-left: 3px solid rgba(240,122,34,0.4);
+  border-radius: 3px;
+  padding: 14px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.74rem;
+  color: #c8c8c8;
+  line-height: 1.7;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* ── INVESTIGATION STEPS ────────────────────────────────────── */
+.steps-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.step-item {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.step-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--accent);
+  background: rgba(240,122,34,0.1);
+  border: 1px solid rgba(240,122,34,0.25);
+  border-radius: 3px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+
+.step-text {
+  font-size: 0.875rem;
+  color: var(--text);
+  line-height: 1.6;
+  padding-top: 3px;
+}
+
+/* ── ESCALATION ROW ─────────────────────────────────────────── */
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.meta-key {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--text-dimmer);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.meta-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+}
+
+/* ── COMPACT CARD ───────────────────────────────────────────── */
+.card-compact .case-section { padding: 16px 24px; }
+.card-compact .case-header  { padding: 20px 24px; }
+
+.view-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--accent);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  margin-top: 6px;
+  transition: opacity 0.15s;
+}
+.view-link:hover { opacity: 0.75; }
+
+/* ── BEC TIMELINE (three-column) ────────────────────────────── */
+.bec-timeline { position: relative; padding-left: 22px; }
+.bec-timeline::before {
+  content: '';
+  position: absolute;
+  left: 5px; top: 10px; bottom: 10px;
+  width: 1px;
+  background: var(--border);
+}
+
+.bec-timeline-item {
+  position: relative;
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+.bec-timeline-item:last-child { margin-bottom: 0; }
+.bec-timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -17px; top: 8px;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--accent);
+}
+
+.bec-tl-right {}
+.bec-tl-activity {
+  font-size: 0.875rem;
+  color: var(--text);
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+.bec-tl-detail {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
 /* ── EMPTY STATE ───────────────────────────────────────────── */
 .empty-state {
   text-align: center;
