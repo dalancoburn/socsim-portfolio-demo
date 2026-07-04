@@ -1,5 +1,6 @@
 ---
 import VerifiedBadge from './VerifiedBadge.astro';
+import { md } from '../utils/md';
 
 interface Alert {
   id: string;
@@ -91,7 +92,7 @@ const compact = !!detailUrl;
       </div>
 
       {compact && (
-        <p class="case-summary" style="margin-top:10px;">{alert.whatHappened}</p>
+        <div class="case-summary md-content" style="margin-top:10px;" set:html={md(alert.whatHappened)} />
       )}
 
       {compact && detailUrl && (
@@ -126,20 +127,20 @@ const compact = !!detailUrl;
         <div class="alert-box" style="margin-bottom:10px;">
           <span class="alert-rule">What triggered it: </span>{alert.whatTriggered}
         </div>
-        <div class="alert-box">
-          <span class="alert-rule">Why it triggered: </span>{alert.whyTriggered}
+        <div class="alert-box md-content">
+          <span class="alert-rule">Why it triggered: </span><span set:html={md(alert.whyTriggered)} style="display:inline;" />
         </div>
       </div>
 
       <!-- Investigation Findings -->
       <div class="case-section">
         <div class="case-section-label">What Happened</div>
-        <div class="case-section-content">{alert.whatHappened}</div>
+        <div class="case-section-content md-content" set:html={md(alert.whatHappened)} />
 
         {alert.evidence && (
           <>
             <div class="case-section-label" style="margin-top:16px;">Evidence</div>
-            <div class="case-section-content">{alert.evidence}</div>
+            <div class="case-section-content md-content" set:html={md(alert.evidence)} />
           </>
         )}
 
@@ -158,7 +159,7 @@ const compact = !!detailUrl;
               <span class={`verdict-badge ${verdictClass[alert.verdict] ?? ''}`}>{alert.verdict}</span>
               <span class={`cat-badge ${catClass[alert.categorisation] ?? ''}`}>{catLabel[alert.categorisation] ?? alert.categorisation}</span>
             </div>
-            <div class="case-section-content">{alert.verdictJustification}</div>
+            <div class="case-section-content md-content" set:html={md(alert.verdictJustification)} />
           </div>
         </div>
       </div>
@@ -200,7 +201,7 @@ const compact = !!detailUrl;
           </div>
         </div>
         {alert.containment && (
-          <div class="case-section-content">{alert.containment}</div>
+          <div class="case-section-content md-content" set:html={md(alert.containment)} />
         )}
       </div>
 
@@ -208,7 +209,7 @@ const compact = !!detailUrl;
       {alert.lessonsLearned && (
         <div class="case-section">
           <div class="case-section-label">Lessons Learned</div>
-          <div class="case-section-content">{alert.lessonsLearned}</div>
+          <div class="case-section-content md-content" set:html={md(alert.lessonsLearned)} />
         </div>
       )}
 

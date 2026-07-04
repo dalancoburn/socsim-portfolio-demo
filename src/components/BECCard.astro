@@ -1,5 +1,6 @@
 ---
 import VerifiedBadge from './VerifiedBadge.astro';
+import { md } from '../utils/md';
 
 interface TimelineEntry {
   time: string;
@@ -60,7 +61,7 @@ function fmtDate(iso: string) {
       </div>
 
       {compact && (
-        <p class="case-summary" style="margin-top:10px;">{bec.attackNarrative}</p>
+        <div class="case-summary md-content" style="margin-top:10px;" set:html={md(bec.attackNarrative)} />
       )}
 
       {compact && detailUrl && (
@@ -80,7 +81,7 @@ function fmtDate(iso: string) {
       <!-- Attack Narrative -->
       <div class="case-section">
         <div class="case-section-label">Attack Narrative</div>
-        <div class="case-section-content">{bec.attackNarrative}</div>
+        <div class="case-section-content md-content" set:html={md(bec.attackNarrative)} />
         {bec.pdfUrl && (
           <a href={bec.pdfUrl} class="view-link" style="margin-top:12px;" target="_blank" rel="noopener noreferrer">
             Full PDF report ↗
@@ -110,21 +111,21 @@ function fmtDate(iso: string) {
       {bec.initialAccess && (
         <div class="case-section">
           <div class="case-section-label">3.1 — Initial Access</div>
-          <div class="case-section-content">{bec.initialAccess}</div>
+          <div class="case-section-content md-content" set:html={md(bec.initialAccess)} />
         </div>
       )}
 
       {bec.unauthorisedActivity && (
         <div class="case-section">
           <div class="case-section-label">3.2 — Unauthorised Activity</div>
-          <div class="case-section-content">{bec.unauthorisedActivity}</div>
+          <div class="case-section-content md-content" set:html={md(bec.unauthorisedActivity)} />
         </div>
       )}
 
       {bec.dataAccess && (
         <div class="case-section">
           <div class="case-section-label">3.3 — Data Access</div>
-          <div class="case-section-content">{bec.dataAccess}</div>
+          <div class="case-section-content md-content" set:html={md(bec.dataAccess)} />
         </div>
       )}
 
@@ -132,7 +133,7 @@ function fmtDate(iso: string) {
       {bec.lessonsLearned && (
         <div class="case-section">
           <div class="case-section-label">Lessons Learned</div>
-          <div class="case-section-content">{bec.lessonsLearned}</div>
+          <div class="case-section-content md-content" set:html={md(bec.lessonsLearned)} />
         </div>
       )}
 

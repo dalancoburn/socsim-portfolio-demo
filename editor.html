@@ -7,6 +7,78 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css" />
+  <style>
+  /* ── EasyMDE dark theme ── */
+  .EasyMDEContainer { width: 100%; }
+  .EasyMDEContainer .editor-toolbar {
+    background: #111; border: 1px solid rgba(255,255,255,0.1);
+    border-bottom: none; border-radius: 4px 4px 0 0; padding: 4px 6px;
+  }
+  .EasyMDEContainer .editor-toolbar button {
+    color: #777 !important; border: none; background: none;
+    border-radius: 3px; width: 26px; height: 26px; padding: 0;
+  }
+  .EasyMDEContainer .editor-toolbar button:hover,
+  .EasyMDEContainer .editor-toolbar button.active {
+    background: rgba(255,255,255,0.08) !important; color: #e8e8e8 !important;
+  }
+  .EasyMDEContainer .editor-toolbar i.separator {
+    border-color: rgba(255,255,255,0.1) !important;
+  }
+  .EasyMDEContainer .CodeMirror {
+    background: #1a1a1a !important; color: #e8e8e8 !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    border-radius: 0 0 4px 4px !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 13.5px !important; line-height: 1.65 !important;
+    padding: 8px 4px;
+  }
+  .EasyMDEContainer .CodeMirror-focused {
+    border-color: rgba(240,122,34,0.5) !important;
+  }
+  .EasyMDEContainer .CodeMirror .cm-strong { color: #fff !important; font-weight: 600; }
+  .EasyMDEContainer .CodeMirror .cm-em { color: #aaa !important; }
+  .EasyMDEContainer .CodeMirror .cm-url,
+  .EasyMDEContainer .CodeMirror .cm-link { color: #f07a22 !important; }
+  .EasyMDEContainer .CodeMirror .cm-comment { color: #c8c8c8 !important; background: rgba(255,255,255,0.05); border-radius: 2px; }
+  .EasyMDEContainer .CodeMirror .cm-header { color: #fff !important; font-weight: 700; }
+  .EasyMDEContainer .CodeMirror-cursor { border-color: #f07a22 !important; }
+  .EasyMDEContainer .editor-preview {
+    background: #141414 !important; color: #e8e8e8 !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+  }
+  .EasyMDEContainer .editor-preview pre {
+    background: #0a0a0a; border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 3px; padding: 10px;
+  }
+  .EasyMDEContainer .editor-preview code { color: #f07a22; background: rgba(255,255,255,0.06); }
+  .EasyMDEContainer .editor-statusbar { display: none; }
+  /* screenshot helper panel */
+  .screenshot-help {
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,.7);
+    z-index:300; align-items:center; justify-content:center;
+  }
+  .screenshot-help.open { display:flex; }
+  .screenshot-help-box {
+    background:#141414; border:1px solid rgba(255,255,255,.12);
+    border-radius:8px; padding:28px 32px; max-width:480px; width:90%;
+  }
+  .screenshot-help-box h3 {
+    font-family:'Big Shoulders Display',sans-serif; font-weight:700;
+    font-size:1.3rem; color:#fff; margin-bottom:12px;
+  }
+  .screenshot-help-box ol {
+    color:#888; font-size:.875rem; line-height:1.8; margin-left:1.2em;
+  }
+  .screenshot-help-box ol li strong { color:#e8e8e8; }
+  .screenshot-help-box code {
+    font-family:'JetBrains Mono',monospace; font-size:.78rem;
+    background:rgba(255,255,255,.07); padding:1px 6px; border-radius:3px;
+    color:#f07a22;
+  }
+  .screenshot-help-box .close-btn { margin-top:20px; }
+  </style>
   <style>
     :root {
       --bg:#0d0d0d;--surface:#141414;--surface-2:#1a1a1a;--surface-3:#1f1f1f;
@@ -655,6 +727,64 @@ function becTLRowHTML(time, activity, detail) {
 }
 
 /* ═══════════════════════════════════════════════════
+   EASYMDE INSTANCE REGISTRY
+   Key format: "uid:fieldName"
+═══════════════════════════════════════════════════ */
+const mdes = {};
+
+const ALERT_MDE_FIELDS = ['whyTriggered','whatHappened','evidence','verdictJustification','containment','lessonsLearned'];
+const BEC_MDE_FIELDS   = ['attackNarrative','initialAccess','unauthorisedActivity','dataAccess','lessonsLearned'];
+
+const MDE_TOOLBAR = [
+  'bold','italic','|',
+  'unordered-list','ordered-list','|',
+  'code','|',
+  {
+    name:'screenshot', title:'Insert Screenshot',
+    className:'fa fa-camera',
+    action: () => document.getElementById('screenshot-help').classList.add('open'),
+  },
+  'image','link','|',
+  'preview',
+];
+
+function initMDEs(block, uid, type) {
+  const fields = type === 'alert' ? ALERT_MDE_FIELDS : BEC_MDE_FIELDS;
+  fields.forEach(field => {
+    const el = block.querySelector(`[data-f="${field}"]`);
+    if (!el) return;
+    const key = `${uid}:${field}`;
+    mdes[key] = new EasyMDE({
+      element: el,
+      toolbar: MDE_TOOLBAR,
+      spellChecker: false,
+      status: false,
+      autofocus: false,
+      minHeight: el.rows >= 4 ? '120px' : '90px',
+      placeholder: el.placeholder || '',
+      promptURLs: true,
+    });
+  });
+}
+
+function getMDE(uid, field) {
+  const key = `${uid}:${field}`;
+  return mdes[key] ? mdes[key].value() : '';
+}
+
+function setMDE(uid, field, value) {
+  const key = `${uid}:${field}`;
+  if (mdes[key]) mdes[key].value(value ?? '');
+}
+
+function destroyMDEs(uid) {
+  Object.keys(mdes).filter(k => k.startsWith(uid + ':')).forEach(k => {
+    try { mdes[k].toTextArea(); } catch {}
+    delete mdes[k];
+  });
+}
+
+/* ═══════════════════════════════════════════════════
    ADD / REMOVE BLOCKS
 ═══════════════════════════════════════════════════ */
 function addAlert(data) {
@@ -662,8 +792,10 @@ function addAlert(data) {
   const uid = 'alt-' + Date.now() + alertCount;
   const el = document.createElement('div');
   el.innerHTML = alertBlockHTML(uid, alertCount);
-  document.getElementById('alerts-container').appendChild(el.firstElementChild);
-  if (data) populateAlertBlock(document.querySelector(`[data-uid="${uid}"]`), data);
+  const block = el.firstElementChild;
+  document.getElementById('alerts-container').appendChild(block);
+  initMDEs(block, uid, 'alert');
+  if (data) populateAlertBlock(block, data, uid);
 }
 
 function addBEC(data) {
@@ -671,11 +803,14 @@ function addBEC(data) {
   const uid = 'bec-' + Date.now() + becCount;
   const el = document.createElement('div');
   el.innerHTML = becBlockHTML(uid, becCount);
-  document.getElementById('bec-container').appendChild(el.firstElementChild);
-  if (data) populateBECBlock(document.querySelector(`[data-uid="${uid}"]`), data);
+  const block = el.firstElementChild;
+  document.getElementById('bec-container').appendChild(block);
+  initMDEs(block, uid, 'bec');
+  if (data) populateBECBlock(block, data, uid);
 }
 
 function removeBlock(uid) {
+  destroyMDEs(uid);
   document.querySelector(`[data-uid="${uid}"]`)?.remove();
 }
 
@@ -698,33 +833,42 @@ function addBECTimelineRow(btn, time, activity, detail) {
 ═══════════════════════════════════════════════════ */
 function f(block, field) { return block.querySelector(`[data-f="${field}"]`); }
 
-function populateAlertBlock(block, d) {
+function populateAlertBlock(block, d, uid) {
   const set = (field, v) => { const el = f(block, field); if (el) el.value = v ?? ''; };
+  // plain inputs / selects / non-MDE textareas
   set('id', d.id); set('alertName', d.alertName); set('alertId', d.alertId ?? '');
   set('date', d.date); set('severity', d.severity); set('hostOrAccount', d.hostOrAccount);
-  set('dateTime', d.dateTime); set('whatTriggered', d.whatTriggered); set('whyTriggered', d.whyTriggered);
-  set('whatHappened', d.whatHappened); set('evidence', d.evidence); set('wasSuccessful', d.wasSuccessful);
-  set('verdict', d.verdict); set('categorisation', d.categorisation);
-  set('verdictJustification', d.verdictJustification); set('queries', d.queries ?? '');
+  set('dateTime', d.dateTime); set('whatTriggered', d.whatTriggered);
+  set('wasSuccessful', d.wasSuccessful); set('verdict', d.verdict);
+  set('categorisation', d.categorisation); set('queries', d.queries ?? '');
   set('escalation', d.escalation); set('alertTuning', d.alertTuning ?? '');
-  set('containment', d.containment); set('lessonsLearned', d.lessonsLearned);
   set('tools', (d.tools ?? []).join('\n'));
   const vc = f(block, 'verified'); if (vc) vc.checked = d.verified ?? false;
+  // MDE fields — must call after initMDEs
+  setMDE(uid, 'whyTriggered', d.whyTriggered);
+  setMDE(uid, 'whatHappened', d.whatHappened);
+  setMDE(uid, 'evidence', d.evidence);
+  setMDE(uid, 'verdictJustification', d.verdictJustification);
+  setMDE(uid, 'containment', d.containment);
+  setMDE(uid, 'lessonsLearned', d.lessonsLearned);
 
   const stepBtn = block.querySelector('[data-rep="steps"] + button');
   (d.investigationSteps ?? []).forEach(s => addStep(stepBtn, s));
 }
 
-function populateBECBlock(block, d) {
+function populateBECBlock(block, d, uid) {
   const set = (field, v) => { const el = f(block, field); if (el) el.value = v ?? ''; };
   set('id', d.id); set('caseName', d.caseName); set('caseReference', d.caseReference);
   set('affectedAccount', d.affectedAccount); set('incidentDateFrom', d.incidentDateFrom);
   set('incidentDateTo', d.incidentDateTo); set('investigationDate', d.investigationDate);
-  set('attackNarrative', d.attackNarrative); set('initialAccess', d.initialAccess);
-  set('unauthorisedActivity', d.unauthorisedActivity); set('dataAccess', d.dataAccess);
-  set('lessonsLearned', d.lessonsLearned); set('tools', (d.tools ?? []).join('\n'));
-  set('pdfUrl', d.pdfUrl ?? '');
+  set('tools', (d.tools ?? []).join('\n')); set('pdfUrl', d.pdfUrl ?? '');
   const vc = f(block, 'verified'); if (vc) vc.checked = d.verified ?? false;
+  // MDE fields
+  setMDE(uid, 'attackNarrative', d.attackNarrative);
+  setMDE(uid, 'initialAccess', d.initialAccess);
+  setMDE(uid, 'unauthorisedActivity', d.unauthorisedActivity);
+  setMDE(uid, 'dataAccess', d.dataAccess);
+  setMDE(uid, 'lessonsLearned', d.lessonsLearned);
 
   const tlBtn = block.querySelector('[data-rep="timeline"] + button');
   (d.timeline ?? []).forEach(e => addBECTimelineRow(tlBtn, e.time, e.activity, e.detail ?? ''));
@@ -749,7 +893,9 @@ function collectData() {
 
   const alerts = [];
   document.querySelectorAll('[data-type="alert"]').forEach(block => {
+    const uid = block.dataset.uid;
     const get = field => val(f(block, field));
+    const mget = field => getMDE(uid, field) || get(field); // prefer MDE value
     const tools = get('tools').split('\n').map(s=>s.trim()).filter(Boolean);
     const steps = [];
     block.querySelectorAll('[data-rep="steps"] [data-sub="step"]').forEach(el => {
@@ -759,20 +905,22 @@ function collectData() {
       id: get('id'), alertName: get('alertName'), alertId: get('alertId'),
       date: get('date'), severity: get('severity'), hostOrAccount: get('hostOrAccount'),
       dateTime: get('dateTime'), whatTriggered: get('whatTriggered'),
-      whyTriggered: get('whyTriggered'), whatHappened: get('whatHappened'),
-      evidence: get('evidence'), wasSuccessful: get('wasSuccessful'),
-      verdict: get('verdict'), verdictJustification: get('verdictJustification'),
+      whyTriggered: mget('whyTriggered'), whatHappened: mget('whatHappened'),
+      evidence: mget('evidence'), wasSuccessful: get('wasSuccessful'),
+      verdict: get('verdict'), verdictJustification: mget('verdictJustification'),
       investigationSteps: steps, queries: get('queries'),
       categorisation: get('categorisation'), escalation: get('escalation'),
-      containment: get('containment'), alertTuning: get('alertTuning'),
-      lessonsLearned: get('lessonsLearned'), tools,
+      containment: mget('containment'), alertTuning: get('alertTuning'),
+      lessonsLearned: mget('lessonsLearned'), tools,
       verified: f(block, 'verified')?.checked ?? false,
     });
   });
 
   const bec = [];
   document.querySelectorAll('[data-type="bec"]').forEach(block => {
+    const uid = block.dataset.uid;
     const get = field => val(f(block, field));
+    const mget = field => getMDE(uid, field) || get(field);
     const tools = get('tools').split('\n').map(s=>s.trim()).filter(Boolean);
     const timeline = [];
     block.querySelectorAll('[data-rep="timeline"] .rep-row').forEach(row => {
@@ -785,9 +933,9 @@ function collectData() {
       id: get('id'), caseName: get('caseName'), caseReference: get('caseReference'),
       affectedAccount: get('affectedAccount'), incidentDateFrom: get('incidentDateFrom'),
       incidentDateTo: get('incidentDateTo'), investigationDate: get('investigationDate'),
-      attackNarrative: get('attackNarrative'), timeline,
-      initialAccess: get('initialAccess'), unauthorisedActivity: get('unauthorisedActivity'),
-      dataAccess: get('dataAccess'), lessonsLearned: get('lessonsLearned'),
+      attackNarrative: mget('attackNarrative'), timeline,
+      initialAccess: mget('initialAccess'), unauthorisedActivity: mget('unauthorisedActivity'),
+      dataAccess: mget('dataAccess'), lessonsLearned: mget('lessonsLearned'),
       tools, pdfUrl: get('pdfUrl'),
       verified: f(block, 'verified')?.checked ?? false,
     });
@@ -892,9 +1040,56 @@ function populateForm(d) {
 }
 
 /* ═══════════════════════════════════════════════════
+   AUTOSAVE TO LOCALSTORAGE
+   Saves the raw JSON every 60 s so work isn't lost on tab close.
+═══════════════════════════════════════════════════ */
+function autosave() {
+  try {
+    localStorage.setItem('socsim_draft', JSON.stringify(collectData()));
+  } catch {}
+}
+
+function restoreDraft() {
+  try {
+    const raw = localStorage.getItem('socsim_draft');
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    // Only restore if there's real content (non-empty name)
+    if (!d?.profile?.name && !d?.alerts?.length && !d?.bec?.length) return;
+    if (confirm('Restore unsaved draft from your last session?')) populateForm(d);
+  } catch {}
+}
+
+/* ═══════════════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════════════ */
 loadGHSettings();
+restoreDraft();
+setInterval(autosave, 60000);
 </script>
+
+<!-- ── SCREENSHOT HELPER MODAL ─────────────────── -->
+<div class="screenshot-help" id="screenshot-help" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="screenshot-help-box">
+    <h3>Adding Screenshots</h3>
+    <ol>
+      <li><strong>Upload the image to your GitHub repo</strong><br>
+        Go to your repo on GitHub → navigate to <code>src/assets/</code> (create it if needed) → drag-and-drop your screenshot → commit.
+      </li>
+      <li><strong>Copy the image URL</strong><br>
+        Click the uploaded file → click <em>Raw</em> → copy the URL from your browser.<br>
+        It will look like:<br>
+        <code>https://raw.githubusercontent.com/username/repo/main/src/assets/screenshot.png</code>
+      </li>
+      <li><strong>Insert it in your write-up</strong><br>
+        Use standard Markdown image syntax:<br>
+        <code>![Description of image](paste-url-here)</code>
+      </li>
+    </ol>
+    <button class="btn close-btn" onclick="document.getElementById('screenshot-help').classList.remove('open')">Got it</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
 </body>
 </html>
