@@ -187,6 +187,29 @@
     .action-bar-right{display:flex;gap:8px}
     #file-input{display:none}
 
+    /* ── THEME PICKER ── */
+    .theme-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+    .theme-swatch{
+      cursor:pointer;border:2px solid var(--border);border-radius:6px;
+      overflow:hidden;transition:border-color .15s,transform .1s;
+    }
+    .theme-swatch:hover{border-color:rgba(255,255,255,.3);transform:translateY(-1px)}
+    .theme-swatch.active{border-color:#f07a22;box-shadow:0 0 0 1px #f07a22}
+    .swatch-preview{
+      height:48px;display:flex;align-items:center;justify-content:center;gap:6px;
+      padding:8px;position:relative;
+    }
+    .swatch-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+    .swatch-label{
+      font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.06em;
+      text-align:center;padding:5px 4px;border-top:1px solid rgba(255,255,255,.06);
+      color:#666;background:#111;
+    }
+
+    @media(max-width:640px){
+      .theme-grid{grid-template-columns:repeat(3,1fr)}
+    }
+
     @media(max-width:640px){
       .ed-header{padding:12px 16px}.ed-body{padding:20px 14px 90px}
       .form-row,.form-row.three,.form-row.four{grid-template-columns:1fr}
@@ -301,6 +324,61 @@
           <input id="p-email" type="email" class="form-input" placeholder="you@example.com" />
         </div>
       </div>
+
+      <div class="form-divider"></div>
+      <div class="sub-label">Portfolio Theme</div>
+      <input type="hidden" id="p-theme" value="operator" />
+      <div class="theme-grid" id="theme-grid">
+
+        <div class="theme-swatch active" data-theme="operator" onclick="selectTheme('operator')">
+          <div class="swatch-preview" style="background:#0d0d0d;">
+            <div class="swatch-dot" style="background:#f07a22;"></div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.55rem;color:#888;">Aa</div>
+          </div>
+          <div class="swatch-label">Operator</div>
+        </div>
+
+        <div class="theme-swatch" data-theme="terminal" onclick="selectTheme('terminal')">
+          <div class="swatch-preview" style="background:#000000;">
+            <div class="swatch-dot" style="background:#00e676;"></div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.55rem;color:#5db87a;">Aa</div>
+          </div>
+          <div class="swatch-label">Terminal</div>
+        </div>
+
+        <div class="theme-swatch" data-theme="midnight" onclick="selectTheme('midnight')">
+          <div class="swatch-preview" style="background:#080e1f;">
+            <div class="swatch-dot" style="background:#38bdf8;"></div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.55rem;color:#94a3b8;">Aa</div>
+          </div>
+          <div class="swatch-label">Midnight</div>
+        </div>
+
+        <div class="theme-swatch" data-theme="obsidian" onclick="selectTheme('obsidian')">
+          <div class="swatch-preview" style="background:#09090b;">
+            <div class="swatch-dot" style="background:#a78bfa;"></div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.55rem;color:#a1a1aa;">Aa</div>
+          </div>
+          <div class="swatch-label">Obsidian</div>
+        </div>
+
+        <div class="theme-swatch" data-theme="arctic" onclick="selectTheme('arctic')">
+          <div class="swatch-preview" style="background:#f8fafc;">
+            <div class="swatch-dot" style="background:#0369a1;"></div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.55rem;color:#475569;">Aa</div>
+          </div>
+          <div class="swatch-label">Arctic</div>
+        </div>
+
+        <div class="theme-swatch" data-theme="crimson" onclick="selectTheme('crimson')">
+          <div class="swatch-preview" style="background:#0c0808;">
+            <div class="swatch-dot" style="background:#f43f5e;"></div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.55rem;color:#fca5a5;">Aa</div>
+          </div>
+          <div class="swatch-label">Crimson</div>
+        </div>
+
+      </div>
     </div>
   </div>
 
@@ -338,6 +416,13 @@
 const esc = s => String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const val = el => (el?.value??'').trim();
 let alertCount = 0, becCount = 0;
+
+function selectTheme(name) {
+  document.getElementById('p-theme').value = name;
+  document.querySelectorAll('.theme-swatch').forEach(s => {
+    s.classList.toggle('active', s.dataset.theme === name);
+  });
+}
 
 function showNotif(msg, type='success', ms=5000) {
   const n = document.getElementById('notif');
@@ -885,6 +970,7 @@ function collectData() {
     tagline:  val(document.getElementById('p-tagline')),
     location: val(document.getElementById('p-location')),
     photo:    val(document.getElementById('p-photo')),
+    theme:    document.getElementById('p-theme').value || 'operator',
     links: {
       linkedin: val(document.getElementById('p-linkedin')),
       github:   val(document.getElementById('p-github')),
@@ -1123,6 +1209,7 @@ function populateForm(d) {
   document.getElementById('p-linkedin').value = p.links?.linkedin ?? '';
   document.getElementById('p-github').value   = p.links?.github   ?? '';
   document.getElementById('p-email').value    = p.links?.email    ?? '';
+  selectTheme(p.theme ?? 'operator');
 
   document.getElementById('alerts-container').innerHTML = '';
   alertCount = 0;
