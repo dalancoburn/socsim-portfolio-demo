@@ -10,7 +10,12 @@ A personal case-study portfolio for WDLabs / SOCSIM members. You own the content
 Click **"Use this template"** (green button, top-right) → name it anything → create repository.
 
 **2. Enable GitHub Pages**
-Go to your repo → **Settings** → **Pages** → under *Build and deployment* set **Source: GitHub Actions** → save.
+Go to your repo → **Settings** → **Pages** → under *Build and deployment* set:
+- Source: **Deploy from a branch**
+- Branch: **gh-pages** → **/ (root)**
+→ Save.
+
+*(The gh-pages branch is created automatically on first push — if it doesn't appear in the dropdown yet, push a commit first then come back.)*
 
 **3. Create a GitHub Personal Access Token**
 Go to **github.com → Settings → Developer settings → Personal access tokens → Tokens (classic)** → Generate new token.
