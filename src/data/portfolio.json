@@ -14,37 +14,83 @@
   },
   "alerts": [
     {
-      "id": "ALT-001",
-      "alertName": "Credential Harvesting Tool Detected",
-      "alertId": "1234",
-      "date": "2026-07-05",
-      "severity": "Critical",
-      "hostOrAccount": "testuser1",
-      "dateTime": "4 July 2026 5:45 PM (UTC+10)",
-      "whatTriggered": "Mimikatz",
-      "whyTriggered": "Defender made a behavioural detection for Mimikatz attempting to dump credentials from LSASS.",
-      "whatHappened": "Popular credential harvesting tool Mimikatz was executed.",
-      "evidence": "C:\\Users\\testuser1\\Downloads\\MimiKatz.exe",
+      "id": "",
+      "alertName": "",
+      "alertId": "",
+      "date": "",
+      "severity": "High",
+      "hostOrAccount": "",
+      "dateTime": "",
+      "whatTriggered": "",
+      "whyTriggered": "",
+      "whatHappened": "",
+      "evidence": "",
       "wasSuccessful": "No",
       "verdict": "Malicious",
-      "verdictJustification": "The hash identified the executable as the legitimate Mimikatz executable.",
-      "investigationSteps": [
-        "Test step 1",
-        "Test step 2"
-      ],
+      "verdictJustification": "",
+      "investigationSteps": [],
       "queries": "",
       "categorisation": "TP",
       "escalation": "Urgent",
-      "containment": "1. Isolate the device\n2. Perform digital forensics the device to determine initial access vector and impact\n3. Rebuild the device",
+      "containment": "",
       "alertTuning": "",
       "lessonsLearned": "",
+      "tools": [],
+      "verified": false
+    }
+  ],
+  "bec": [
+    {
+      "id": "CASE-001",
+      "caseName": "Project Victoria",
+      "caseReference": "",
+      "affectedAccount": "donald.anderson@wdlabs.com.au",
+      "incidentDateFrom": "",
+      "incidentDateTo": "",
+      "investigationDate": "2026-06-10",
+      "attackNarrative": "Between 7 March 2026 and 10 March 2026, a threat actor compromised WDLabs' corporate Microsoft cloud environment, resulting in the unauthorised exfiltration of multiple internal documents and the launch of an internal phishing campaign. The initial breach occurred via an internal phishing email sent from dalan.coburn@wdlabs.com.au to\ndonald.anderson@wdlabs.com.au , suggesting that the sender's account was compromised by the threat actor. This led to the unauthorised access of the donald.anderson@wdlabs.com.au account from an unusual external IP. The impact of this incident is account compromise and internal data theft. The threat actor managed to exfiltrate multiple internal PDF documents from the company's SharePoint site. They also leveraged the compromised account of Donald Anderson to gather information about the company to launch targeted phishing campaigns to other staff members of WDLabs.",
+      "timeline": [
+        {
+          "time": "07/03/2026 02:19:50",
+          "activity": "Suspicious Email",
+          "detail": "A suspicious email was sent by dalan.coburn@wdlabs.com.au to donald.anderson@wdlabs.com.au regarding training."
+        },
+        {
+          "time": "07/03/2026 02:27:32",
+          "activity": "Initial Access",
+          "detail": "First malicious login by 15.135.61.79 to donald.anderson@wdlabs.com.au ."
+        },
+        {
+          "time": "07/03/2026 02:49:55 - 10/03/2026 10:15:51",
+          "activity": "Email Access",
+          "detail": "Multiple emails were read by the threat actor, likely to gather information about the victim."
+        },
+        {
+          "time": "09/03/2026 07:10:45",
+          "activity": "Malicious Inbox Rule",
+          "detail": "A new inbox rule named . was created to redirect incoming emails from naomi.hunter@wdlabs.com.au to RSS Feeds."
+        },
+        {
+          "time": "09/03/2026 07:21:05 - 10/03/2026 09:44:34",
+          "activity": "Data exfiltration via SharePoint",
+          "detail": "Multiple PDF files was exfiltrated from the WDLabsOperations SharePoint site."
+        },
+        {
+          "time": "10/03/2026 09:51:40",
+          "activity": "Outbound Phishing",
+          "detail": "Email sent from donald.anderson@wdlabs.com.au to naomi.hunter@wdlabs.com.au with the subject Report ."
+        }
+      ],
+      "initialAccess": "On 7 March 2026 02:19:50 UTC, the dalan.coburn@wdlabs.com.au account sent malicious emails to the target account\ndonald.anderson@wdlabs.com.au . From our analysis, one email was received by donald.anderson@wdlabs.com.au and\nwas titled URGENT: Training . The email contains a message requesting the victim to click on a link that supposedly contains a cyber training. The sender also requested the recipient to complete training by close of business (CoB). At the time of investigation, we could not verify the contents of the URL sent by dalan.coburn@wdlabs.com.au. Around 8 minutes after donald.anderson@wdlabs.com.au received the suspicious email, we recognised a login with the donald.anderson@wdlabs.com.au account from 15.135.61.79 . The geo-location of the IP was identified to be in Sydney,\nAustralia, which did not match the expected baseline of Donald Anderson's usual activities therefore marking it as a malicious activity. We suspect that the URL sent by dalan.coburn@wdlabs.com.au was a phishing link to harvest the victim's credentials, allowing the threat actor to log in.",
+      "unauthorisedActivity": "On 9 March 2026 07:10:45 UTC, the threat actor created a new inbox rule on the donald.anderson@wdlabs.com.au account named '.' from the IP 91.217.249.193:17130 . The inbox rule was set up to redirect emails from\nnaomi.hunter@wdlabs.com.au to the RSS Feeds folder. The rule was also set up to always mark captured emails as read.\nThis technique is commonly used to hide any possible security alerts or responses to phishing emails that may be sent by the donald.anderson@wdlabs.com.au account to a less visible folder.\n\nOn 10 March 2026 09:51:40 UTC, the threat actor sent an email from the donald.anderson@wdlabs.com.au account to\nnaomi.hunter@wdlabs.com.au using the subject Report . The email contains a URL of a file hosted inside the\nWDLabsOperation SharePoint site. We could not verify the contents of the URL but based on the URL format, it is likely that the URL would return a list of files and folders inside the Shared Documents folder. Due to the privilege of the threat actor, it is possible that the threat actor created a malicious file inside of the trusted SharePoint site to be used as a phishing vector specifically targeted to Naomi Hunter.\n",
+      "dataAccess": "On 7 March 2026 02:49:55 UTC, the threat actor accessed multiple emails from the donald.anderson@wdlabs.com.au\nExchange mailbox. It is likely that the threat actor was gathering information about the victim and selecting their next target. This activity repeats around once per day until 10 March 2026 10:15:51 UTC.\nOn 9 March 2026 07:21:05 UTC, we discovered that the threat actor managed to download multiple PDF files from the\nWDLabsOperations SharePoint site, specifically inside the Shared Documents folder. We could not identify the contents of the files exfiltrated by the threat actor. This activity also repeats until 10 March 2026 09:51:40 UTC.",
+      "lessonsLearned": "I particularly struggled with organisation of evidences when doing this investigation, where queries, screenshots and other evidence were scattered across different files. For upcoming investigations, I would create a separate Markdown file to dump all evidences that is structured based on timestamps. I would also rename screenshots to attribute it to a certain event and/or timestamp. One thing I learned from this investigation is to always be suspicious of any activity. I almost disregarded the first suspicious email due to the sender being the lab creator, but based on the timing and contents of the email, that event is the only explanation of the malicious initial access. Another thing is to always have an updated timeline of the events occurring on the incident. This helps me tremendously when trying to make sense of what things the threat actor is doing and figuring out if every event has an explanation of why it happened.",
       "tools": [
-        "Microsoft Defender for Endpoint",
         "Microsoft Sentinel",
         "KQL"
       ],
+      "pdfUrl": "",
       "verified": true
     }
-  ],
-  "bec": []
+  ]
 }
