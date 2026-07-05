@@ -5,7 +5,7 @@
     "tagline": "",
     "location": "Melbourne, Australia",
     "photo": "",
-    "theme": "midnight",
+    "theme": "obsidian",
     "links": {
       "linkedin": "https://www.linkedin.com/in/dalan-coburn-933827172/",
       "github": "",
@@ -14,31 +14,29 @@
   },
   "alerts": [
     {
-      "id": "1",
-      "alertName": "1",
-      "alertId": "1",
+      "id": "",
+      "alertName": "",
+      "alertId": "",
       "date": "",
       "severity": "High",
-      "hostOrAccount": "1",
-      "dateTime": "1",
-      "whatTriggered": "test",
-      "whyTriggered": "test",
-      "whatHappened": "test",
-      "evidence": "test",
+      "hostOrAccount": "",
+      "dateTime": "",
+      "whatTriggered": "",
+      "whyTriggered": "",
+      "whatHappened": "",
+      "evidence": "",
       "wasSuccessful": "No",
       "verdict": "Malicious",
-      "verdictJustification": "test",
+      "verdictJustification": "",
       "investigationSteps": [],
-      "queries": "test",
+      "queries": "",
       "categorisation": "TP",
       "escalation": "Urgent",
-      "containment": "test",
-      "alertTuning": "test",
-      "lessonsLearned": "test",
-      "tools": [
-        "KQL"
-      ],
-      "verified": true
+      "containment": "",
+      "alertTuning": "",
+      "lessonsLearned": "",
+      "tools": [],
+      "verified": false
     }
   ],
   "bec": []
