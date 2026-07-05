@@ -768,11 +768,52 @@ footer.site-footer {
 /* ── RESPONSIVE ────────────────────────────────────────────── */
 @media (max-width: 640px) {
   nav.site-nav { padding: 14px 20px; }
-  .page-main { padding: 40px 16px 72px; }
+  .page-main { padding: 32px 16px 64px; }
+
+  /* Profile */
   .profile-header { grid-template-columns: 1fr; gap: 24px; }
-  .profile-name { font-size: 2.25rem; }
-  .case-header { flex-direction: column; }
-  .case-section { padding: 20px 20px; }
-  .timeline-item { grid-template-columns: 1fr; gap: 4px; }
-  footer.site-footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px 20px; }
+  .profile-name { font-size: 2rem; }
+  .profile-tagline { font-size: 0.9rem; }
+
+  /* Cards */
+  .case-header { flex-direction: column; gap: 16px; padding: 20px 18px; }
+  .case-section { padding: 18px 18px; }
+  .case-title { font-size: 1.3rem; }
+  .card-compact .case-header { padding: 18px 18px; }
+  .card-compact .case-section { padding: 14px 18px; }
+
+  /* Timeline */
+  .timeline-item { grid-template-columns: 1fr; gap: 3px; }
+  .timeline-item::before { top: 4px; }
+  .bec-timeline-item { grid-template-columns: 1fr; gap: 4px; }
+  .bec-timeline-item::before { top: 4px; }
+  .timeline-time { font-size: 0.65rem; }
+
+  /* Methodology — allow badges to wrap */
+  .methodology-steps { gap: 6px; }
+  .method-step { white-space: normal; font-size: 0.65rem; padding: 4px 10px; }
+
+  /* IoC table — scroll horizontally rather than overflow */
+  .ioc-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .ioc-table { min-width: 480px; }
+  .ioc-table th, .ioc-table td { padding: 8px 10px; font-size: 0.68rem; }
+
+  /* Steps */
+  .step-num { width: 22px; height: 22px; font-size: 0.58rem; }
+  .step-text { font-size: 0.85rem; }
+
+  /* Meta rows */
+  .meta-row { gap: 8px; }
+
+  /* KQL block */
+  .kql-block { font-size: 0.68rem; padding: 10px 12px; }
+
+  /* Tools */
+  .tool-tag { font-size: 0.62rem; padding: 4px 10px; }
+
+  /* Severity / verdict badges */
+  .severity-badge, .verdict-badge, .cat-badge { font-size: 0.56rem; padding: 2px 8px; }
+
+  /* Footer */
+  footer.site-footer { flex-direction: column; gap: 12px; text-align: center; padding: 20px 16px; }
 }

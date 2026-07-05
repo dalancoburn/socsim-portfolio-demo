@@ -11,7 +11,7 @@ interface Props {
 
 const { iocs } = Astro.props;
 ---
-<table class="ioc-table">
+<div class="ioc-table-scroll"><table class="ioc-table">
   <thead>
     <tr>
       <th>Type</th>
@@ -28,4 +28,4 @@ const { iocs } = Astro.props;
       </tr>
     ))}
   </tbody>
-</table>
+</table></div>
