@@ -14,24 +14,24 @@
   },
   "alerts": [
     {
-      "id": "test",
-      "alertName": "test",
-      "alertId": "123",
+      "id": "1",
+      "alertName": "1",
+      "alertId": "1",
       "date": "",
       "severity": "High",
-      "hostOrAccount": "test",
-      "dateTime": "test",
+      "hostOrAccount": "1",
+      "dateTime": "1",
       "whatTriggered": "test",
       "whyTriggered": "test",
       "whatHappened": "test",
       "evidence": "test",
-      "wasSuccessful": "Yes",
-      "verdict": "Non-malicious",
+      "wasSuccessful": "No",
+      "verdict": "Malicious",
       "verdictJustification": "test",
       "investigationSteps": [],
       "queries": "test",
-      "categorisation": "BTP",
-      "escalation": "Non-urgent",
+      "categorisation": "TP",
+      "escalation": "Urgent",
       "containment": "test",
       "alertTuning": "test",
       "lessonsLearned": "test",
@@ -41,24 +41,5 @@
       "verified": true
     }
   ],
-  "bec": [
-    {
-      "id": "",
-      "caseName": "",
-      "caseReference": "",
-      "affectedAccount": "",
-      "incidentDateFrom": "",
-      "incidentDateTo": "",
-      "investigationDate": "",
-      "attackNarrative": "",
-      "timeline": [],
-      "initialAccess": "",
-      "unauthorisedActivity": "",
-      "dataAccess": "",
-      "lessonsLearned": "",
-      "tools": [],
-      "pdfUrl": "",
-      "verified": false
-    }
-  ]
+  "bec": []
 }
