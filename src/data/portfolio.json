@@ -12,33 +12,7 @@
       "email": "dalan.coburn@webdefend.com.au"
     }
   },
-  "alerts": [
-    {
-      "id": "",
-      "alertName": "",
-      "alertId": "",
-      "date": "",
-      "severity": "High",
-      "hostOrAccount": "",
-      "dateTime": "",
-      "whatTriggered": "",
-      "whyTriggered": "",
-      "whatHappened": "",
-      "evidence": "",
-      "wasSuccessful": "No",
-      "verdict": "Malicious",
-      "verdictJustification": "",
-      "investigationSteps": [],
-      "queries": "",
-      "categorisation": "TP",
-      "escalation": "Urgent",
-      "containment": "",
-      "alertTuning": "",
-      "lessonsLearned": "",
-      "tools": [],
-      "verified": false
-    }
-  ],
+  "alerts": [],
   "bec": [
     {
       "id": "CASE-001",
