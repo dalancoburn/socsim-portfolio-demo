@@ -1,17 +1,50 @@
 {
   "profile": {
-    "name": "[First] [Last]",
-    "role": "[Role] · [Team]",
-    "tagline": "[One sentence — your focus areas and what you're working toward.]",
-    "location": "[City, Country]",
+    "name": "Dalan Coburn",
+    "role": "Senior DFIR Analyst",
+    "tagline": "",
+    "location": "Melbourne, Australia",
     "photo": "",
     "theme": "operator",
     "links": {
-      "linkedin": "",
+      "linkedin": "https://www.linkedin.com/in/dalan-coburn-933827172/",
       "github": "",
-      "email": ""
+      "email": "dalan.coburn@webdefend.com.au"
     }
   },
-  "alerts": [],
+  "alerts": [
+    {
+      "id": "ALT-001",
+      "alertName": "Credential Harvesting Tool Detected",
+      "alertId": "1234",
+      "date": "2026-07-05",
+      "severity": "Critical",
+      "hostOrAccount": "testuser1",
+      "dateTime": "4 July 2026 5:45 PM (UTC+10)",
+      "whatTriggered": "Mimikatz",
+      "whyTriggered": "Defender made a behavioural detection for Mimikatz attempting to dump credentials from LSASS.",
+      "whatHappened": "Popular credential harvesting tool Mimikatz was executed.",
+      "evidence": "C:\\Users\\testuser1\\Downloads\\MimiKatz.exe",
+      "wasSuccessful": "No",
+      "verdict": "Malicious",
+      "verdictJustification": "The hash identified the executable as the legitimate Mimikatz executable.",
+      "investigationSteps": [
+        "Test step 1",
+        "Test step 2"
+      ],
+      "queries": "",
+      "categorisation": "TP",
+      "escalation": "Urgent",
+      "containment": "1. Isolate the device\n2. Perform digital forensics the device to determine initial access vector and impact\n3. Rebuild the device",
+      "alertTuning": "",
+      "lessonsLearned": "",
+      "tools": [
+        "Microsoft Defender for Endpoint",
+        "Microsoft Sentinel",
+        "KQL"
+      ],
+      "verified": true
+    }
+  ],
   "bec": []
 }
