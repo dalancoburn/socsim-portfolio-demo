@@ -1,0 +1,55 @@
+name: Update from SOCSIM template
+
+# Run manually from the Actions tab, or via the editor's "Update" button.
+# Updates all template code files without touching src/data/portfolio.json.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Fetch latest template
+        run: |
+          git remote add template https://github.com/dalancoburn/socsim-portfolio.git
+          git fetch template main --depth=1
+
+      - name: Apply template code files (never touches portfolio.json)
+        run: |
+          git checkout template/main -- \
+            src/components/ \
+            src/layouts/ \
+            src/pages/ \
+            src/styles/ \
+            src/utils/ \
+            public/editor.html \
+            astro.config.mjs \
+            package.json \
+            .github/workflows/deploy.yml
+
+      - name: Install / update dependencies
+        run: npm install
+
+      - name: Commit and push if anything changed
+        run: |
+          git config user.name "SOCSIM Template"
+          git config user.email "noreply@github.com"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "Already up to date — no changes to commit."
+          else
+            git commit -m "Update from SOCSIM template $(date +'%Y-%m-%d')"
+            git push
+          fi

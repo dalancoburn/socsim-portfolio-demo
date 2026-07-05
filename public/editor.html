@@ -211,6 +211,7 @@
     <button class="btn btn-green btn-sm" onclick="loadFromGitHub()">⬇ Load from GitHub</button>
     <button class="btn btn-ghost btn-sm" onclick="document.getElementById('file-input').click()" title="Load a portfolio.json file from your computer">↑ Load file</button>
     <input type="file" id="file-input" accept=".json" onchange="loadJSON(this)" />
+    <button class="btn btn-sm" onclick="updateFromTemplate()" title="Pull the latest components, styles and editor from the SOCSIM template. Your portfolio data is never touched.">↻ Update template</button>
     <button class="btn btn-primary btn-sm" onclick="publishToGitHub()">⬆ Publish to GitHub</button>
   </div>
 </header>
@@ -953,6 +954,59 @@ function downloadJSON() {
   a.href = URL.createObjectURL(new Blob([json], {type:'application/json'}));
   a.download = 'portfolio.json';
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+
+/* ═══════════════════════════════════════════════════
+   UPDATE FROM TEMPLATE
+   Triggers the update-template.yml workflow via the
+   GitHub Actions API. Pulls latest components/styles/
+   editor from the SOCSIM template — never touches
+   the member's portfolio.json.
+═══════════════════════════════════════════════════ */
+async function updateFromTemplate() {
+  const owner = localStorage.getItem('gh_owner')?.trim();
+  const repo  = localStorage.getItem('gh_repo')?.trim();
+  const token = localStorage.getItem('gh_token')?.trim();
+
+  if (!owner || !repo || !token) {
+    showNotif('Set up your GitHub settings first (click ⚙ above).', 'error', 6000);
+    return;
+  }
+
+  if (!confirm(
+    'This will pull the latest components, styles, and editor from the SOCSIM template.\n\n' +
+    'Your portfolio data (investigations + profile) will NOT be changed.\n\n' +
+    'Continue?'
+  )) return;
+
+  showNotif('Triggering update…', 'success', 30000);
+
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/actions/workflows/update-template.yml/dispatches`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ref: 'main' }),
+      }
+    );
+
+    if (res.status === 204) {
+      showNotif(
+        `✓ Update started — check progress at github.com/${owner}/${repo}/actions`,
+        'success', 8000
+      );
+    } else {
+      const err = await res.json().catch(() => ({}));
+      showNotif(`✗ ${err.message ?? 'Could not trigger workflow. Make sure the update-template.yml workflow exists in your repo.'}`, 'error', 8000);
+    }
+  } catch (e) {
+    showNotif(`✗ ${e.message}`, 'error', 8000);
+  }
 }
 
 /* ═══════════════════════════════════════════════════
