@@ -3,12 +3,21 @@ import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BECCard from '../../components/BECCard.astro';
 import portfolio from '../../data/portfolio.json';
+import { mdToText } from '../../utils/md';
 
 export const getStaticPaths = (() => {
-  return portfolio.bec
-    .filter((b) => b.id)
-    .map((b) => ({
-      params: { id: b.id },
+  // Skip blank IDs and dedupe (first occurrence wins) so a member's
+  // copy-pasted duplicate Case ID can never break the whole build.
+  const seen = new Set<string>();
+  return ((portfolio as Record<string, any>).bec ?? [])
+    .filter((b: any) => {
+      const id = String(b.id ?? '').trim();
+      if (!id || seen.has(id)) return false;
+      seen.add(id);
+      return true;
+    })
+    .map((b: any) => ({
+      params: { id: String(b.id).trim() },
       props: { bec: b },
     }));
 }) satisfies GetStaticPaths;
@@ -16,8 +25,10 @@ export const getStaticPaths = (() => {
 const { bec } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '') || '/';
 const pageTitle = `${bec.id} — ${bec.caseName} — ${portfolio.profile.name}`;
+const pageDescription = mdToText(bec.attackNarrative)
+  || `BEC investigation by ${portfolio.profile.name}.`;
 ---
-<BaseLayout title={pageTitle}>
+<BaseLayout title={pageTitle} description={pageDescription}>
   <div style="margin-bottom:32px;">
     <a
       href={base}
